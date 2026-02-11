@@ -5,34 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tracks - Моментальная поддержка</title>
     <meta name="description" content="Пошаговые планы самоподдержки: помогите себе справиться с тревогой, расслабиться перед сном, сфокусироваться на работе. Проверенные инструменты от профессионалов.">
-    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-    <link rel="preload" href="https://cdn.jsdelivr.net/gh/Fonthausen/EuclidCircularA@master/font/EuclidCircularA-Regular.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="./fonts/EuclidCircularA-Regular-WebS.woff2" as="font" type="font/woff2" crossorigin>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Euclid Circular A font - font-display: swap для мобильных */
         @font-face {
             font-family: 'Euclid Circular A';
-            src: url('https://cdn.jsdelivr.net/gh/Fonthausen/EuclidCircularA@master/font/EuclidCircularA-Regular.woff2') format('woff2');
+            src: url('./fonts/EuclidCircularA-Regular-WebS.woff2') format('woff2');
             font-weight: 400;
             font-style: normal;
             font-display: swap;
         }
         @font-face {
             font-family: 'Euclid Circular A';
-            src: url('https://cdn.jsdelivr.net/gh/Fonthausen/EuclidCircularA@master/font/EuclidCircularA-Medium.woff2') format('woff2');
+            src: url('./fonts/EuclidCircularA-Medium-WebM.woff2') format('woff2');
             font-weight: 500;
             font-style: normal;
             font-display: swap;
         }
         @font-face {
             font-family: 'Euclid Circular A';
-            src: url('https://cdn.jsdelivr.net/gh/Fonthausen/EuclidCircularA@master/font/EuclidCircularA-Semibold.woff2') format('woff2');
+            src: url('./fonts/EuclidCircularA-Semibold-WebM.woff2') format('woff2'), url('./fonts/EuclidCircularA-Semibold-WebS.woff2') format('woff2');
             font-weight: 600;
             font-style: normal;
             font-display: swap;
         }
-        
         body {
             font-family: 'Euclid Circular A', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         }
@@ -95,11 +92,11 @@
     <section class="relative min-h-0 md:min-h-[880px] lg:h-[1024px] flex flex-col md:flex-row md:items-center md:justify-start px-4 sm:px-6 md:px-10 lg:px-15 pt-6 pb-8 sm:pt-8 sm:pb-10 md:py-12 lg:py-10 overflow-hidden bg-cream">
         <!-- Фон только на десктопе (md и выше) -->
         <div class="absolute inset-0 pointer-events-none hidden md:block">
-            <picture><source srcset="./images/hero-bg.webp" type="image/webp"><img src="./images/hero-bg.png" alt="" class="w-full h-full object-cover" fetchpriority="high"></picture>
+            <picture><source srcset="./images/hero-bg-800w.webp 800w, ./images/hero-bg-1600w.webp 1600w" type="image/webp" sizes="100vw"><img src="./images/hero-bg.png" alt="" width="1600" height="1024" class="w-full h-full object-cover" fetchpriority="high"></picture>
         </div>
-        <!-- Коллаж над текстом — только на мобильных, увеличен более чем в 2 раза -->
+        <!-- Коллаж над текстом — только на мобильных -->
         <div class="relative z-10 w-full mt-0 mb-4 sm:mb-6 md:hidden">
-            <picture><source srcset="./images/hero-collage.webp" type="image/webp"><img src="./images/hero-collage.png" alt="" class="w-full max-h-[440px] sm:max-h-[560px] object-contain object-center" fetchpriority="high"></picture>
+            <picture><source srcset="./images/hero-collage-700w.webp 700w, ./images/hero-collage-1200w.webp 1200w" type="image/webp" sizes="100vw"><img src="./images/hero-collage.png" alt="" width="700" height="609" class="w-full max-h-[440px] sm:max-h-[560px] object-contain object-center" fetchpriority="high"></picture>
         </div>
         <!-- Текст -->
         <div class="relative z-10 w-full max-w-[538px] pr-4 md:pr-0">
@@ -141,7 +138,7 @@
                 <!-- Карточка 1: Тесты -->
                 <div class="flex-none w-[260px] md:w-[300px] lg:w-[343px] min-h-[560px] md:min-h-[640px] lg:min-h-[708px] rounded-[32px] lg:rounded-[40px] p-4 md:p-5 flex flex-col gap-4 snap-start" style="background-color: #fedb50;">
                     <div class="w-full h-[420px] md:h-[480px] lg:h-[533px] flex-none overflow-hidden rounded-[20px] lg:rounded-[24px]">
-                        <picture><source srcset="./images/slide-1.webp" type="image/webp"><img src="./images/slide-1.png" alt="Тесты" class="w-full h-full object-cover" fetchpriority="high" onerror="this.src='./images/phone-mockup.png'"></picture>
+                        <picture><source srcset="./images/slide-1-400w.webp 400w, ./images/slide-1-600w.webp 600w" type="image/webp" sizes="(max-width: 768px) 260px, 343px"><img src="./images/slide-1.png" alt="Тесты" width="343" height="533" class="w-full h-full object-cover" fetchpriority="high" onerror="this.src='./images/phone-mockup.png'"></picture>
                     </div>
                     <div class="flex-1 flex flex-col gap-2.5 min-h-0">
                         <h3 class="text-[19.522px] font-semibold leading-[1.15] text-black">Тесты</h3>
@@ -152,7 +149,7 @@
                 <!-- Карточка 2: Трекер состояния -->
                 <div class="flex-none w-[260px] md:w-[300px] lg:w-[343px] min-h-[560px] md:min-h-[640px] lg:min-h-[708px] rounded-[32px] lg:rounded-[40px] p-4 md:p-5 flex flex-col gap-4 snap-start" style="background-color: #FEEBC1;">
                     <div class="w-full h-[420px] md:h-[480px] lg:h-[533px] flex-none overflow-hidden rounded-[20px] lg:rounded-[24px]">
-                        <picture><source srcset="./images/slide-3.webp" type="image/webp"><img src="./images/slide-3.png" alt="Трекер состояния" class="w-full h-full object-cover" loading="lazy" onerror="this.src='./images/phone-mockup.png'"></picture>
+                        <picture><source srcset="./images/slide-3-400w.webp 400w, ./images/slide-3-600w.webp 600w" type="image/webp" sizes="(max-width: 768px) 260px, 343px"><img src="./images/slide-3.png" alt="Трекер состояния" width="343" height="533" class="w-full h-full object-cover" loading="lazy" onerror="this.src='./images/phone-mockup.png'"></picture>
                     </div>
                     <div class="flex-1 flex flex-col gap-2.5 min-h-0">
                         <h3 class="text-[19.522px] font-semibold leading-[1.15] text-black">Трекер состояния</h3>
@@ -163,7 +160,7 @@
                 <!-- Карточка 3: Статьи -->
                 <div class="flex-none w-[260px] md:w-[300px] lg:w-[343px] min-h-[560px] md:min-h-[640px] lg:min-h-[708px] rounded-[32px] lg:rounded-[40px] p-4 md:p-5 flex flex-col gap-4 snap-start" style="background-color: #EAEFF8;">
                     <div class="w-full h-[420px] md:h-[480px] lg:h-[533px] flex-none overflow-hidden rounded-[20px] lg:rounded-[24px]">
-                        <picture><source srcset="./images/slide-2.webp" type="image/webp"><img src="./images/slide-2.png" alt="Статьи" class="w-full h-full object-cover" loading="lazy" onerror="this.src='./images/phone-mockup.png'"></picture>
+                        <picture><source srcset="./images/slide-2-400w.webp 400w, ./images/slide-2-600w.webp 600w" type="image/webp" sizes="(max-width: 768px) 260px, 343px"><img src="./images/slide-2.png" alt="Статьи" width="343" height="533" class="w-full h-full object-cover" loading="lazy" onerror="this.src='./images/phone-mockup.png'"></picture>
                     </div>
                     <div class="flex-1 flex flex-col gap-2.5 min-h-0">
                         <h3 class="text-[19.522px] font-semibold leading-[1.15] text-black">Статьи</h3>
@@ -173,7 +170,7 @@
 
                 <!-- Карточка 4: Аутогенные (slide-6) — фото на весь фон, текст белый -->
                 <div class="flex-none w-[260px] md:w-[300px] lg:w-[343px] min-h-[560px] md:min-h-[640px] lg:min-h-[708px] rounded-[32px] lg:rounded-[40px] overflow-hidden snap-start relative">
-                    <picture><source srcset="./images/slide-6.webp" type="image/webp"><img src="./images/slide-6.png" alt="Аутогенные тренировки" class="absolute inset-0 w-full h-full object-cover" loading="lazy" onerror="this.src='./images/phone-mockup.png'"></picture>
+                    <picture><source srcset="./images/slide-6-343w.webp 343w, ./images/slide-6-496w.webp 496w" type="image/webp" sizes="(max-width: 768px) 260px, 343px"><img src="./images/slide-6.png" alt="Аутогенные тренировки" width="343" height="708" class="absolute inset-0 w-full h-full object-cover" loading="lazy" onerror="this.src='./images/phone-mockup.png'"></picture>
                     <div class="absolute inset-0 bg-black/40 rounded-[32px] lg:rounded-[40px]"></div>
                     <div class="relative z-10 h-full flex flex-col justify-end p-4 md:p-5">
                         <h3 class="text-[19.522px] font-semibold leading-[1.15] text-white">Аутогенные тренировки</h3>
@@ -184,7 +181,7 @@
                 <!-- Карточка 5: Восстановительные ритмы -->
                 <div class="flex-none w-[260px] md:w-[300px] lg:w-[343px] min-h-[560px] md:min-h-[640px] lg:min-h-[708px] rounded-[32px] lg:rounded-[40px] p-4 md:p-5 flex flex-col gap-4 snap-start" style="background-color: #FEEBC1;">
                     <div class="w-full h-[420px] md:h-[480px] lg:h-[533px] flex-none overflow-hidden rounded-[20px] lg:rounded-[24px]">
-                        <picture><source srcset="./images/slide-4.webp" type="image/webp"><img src="./images/slide-4.png" alt="Восстановительные ритмы" class="w-full h-full object-cover" loading="lazy" onerror="this.src='./images/phone-mockup.png'"></picture>
+                        <picture><source srcset="./images/slide-4-400w.webp 400w, ./images/slide-4-600w.webp 600w" type="image/webp" sizes="(max-width: 768px) 260px, 343px"><img src="./images/slide-4.png" alt="Восстановительные ритмы" width="343" height="533" class="w-full h-full object-cover" loading="lazy" onerror="this.src='./images/phone-mockup.png'"></picture>
                     </div>
                     <div class="flex-1 flex flex-col gap-2.5 min-h-0">
                         <h3 class="text-[19.522px] font-semibold leading-[1.15] text-black">Восстановительные ритмы</h3>
@@ -195,7 +192,7 @@
                 <!-- Карточка 6: Медитации -->
                 <div class="flex-none w-[260px] md:w-[300px] lg:w-[343px] min-h-[560px] md:min-h-[640px] lg:min-h-[708px] rounded-[32px] lg:rounded-[40px] p-4 md:p-5 flex flex-col gap-4 snap-start" style="background-color: #FFB800;">
                     <div class="w-full h-[420px] md:h-[480px] lg:h-[533px] flex-none overflow-hidden rounded-[20px] lg:rounded-[24px]">
-                        <picture><source srcset="./images/slide-7.webp" type="image/webp"><img src="./images/slide-7.png" alt="Медитации" class="w-full h-full object-cover" loading="lazy" onerror="this.src='./images/phone-mockup.png'"></picture>
+                        <picture><source srcset="./images/slide-7-400w.webp 400w, ./images/slide-7-600w.webp 600w" type="image/webp" sizes="(max-width: 768px) 260px, 343px"><img src="./images/slide-7.png" alt="Медитации" width="343" height="533" class="w-full h-full object-cover" loading="lazy" onerror="this.src='./images/phone-mockup.png'"></picture>
                     </div>
                     <div class="flex-1 flex flex-col gap-2.5 min-h-0">
                         <h3 class="text-[19.522px] font-semibold leading-[1.15] text-black">Медитации</h3>
@@ -206,7 +203,7 @@
                 <!-- Карточка 7: Практики самопомощи -->
                 <div class="flex-none w-[260px] md:w-[300px] lg:w-[343px] min-h-[560px] md:min-h-[640px] lg:min-h-[708px] rounded-[32px] lg:rounded-[40px] p-4 md:p-5 flex flex-col gap-4 snap-start" style="background-color: #FEEBC1;">
                     <div class="w-full h-[420px] md:h-[480px] lg:h-[533px] flex-none overflow-hidden rounded-[20px] lg:rounded-[24px]">
-                        <picture><source srcset="./images/slide-5.webp" type="image/webp"><img src="./images/slide-5.png" alt="Практики самопомощи" class="w-full h-full object-cover" loading="lazy" onerror="this.src='./images/phone-mockup.png'"></picture>
+                        <picture><source srcset="./images/slide-5-400w.webp 400w, ./images/slide-5-600w.webp 600w" type="image/webp" sizes="(max-width: 768px) 260px, 343px"><img src="./images/slide-5.png" alt="Практики самопомощи" width="343" height="533" class="w-full h-full object-cover" loading="lazy" onerror="this.src='./images/phone-mockup.png'"></picture>
                     </div>
                     <div class="flex-1 flex flex-col gap-2.5 min-h-0">
                         <h3 class="text-[19.522px] font-semibold leading-[1.15] text-black">Практики самопомощи</h3>
@@ -222,7 +219,7 @@
         <!-- Жёлтый баннер -->
         <div class="relative min-h-[280px] md:h-[320px] lg:h-[360px] rounded-[24px] md:rounded-[36px] lg:rounded-[48px] px-5 sm:px-8 md:px-12 lg:px-15 py-8 md:py-10 lg:py-12 mb-8 md:mb-12 overflow-hidden">
             <div class="absolute inset-0 bg-yellow rounded-[24px] md:rounded-[36px] lg:rounded-[48px]">
-                <picture><source srcset="./images/banner-bg.webp" type="image/webp"><img src="./images/banner-bg.png" alt="" class="w-full h-full object-cover rounded-[24px] md:rounded-[36px] lg:rounded-[48px]" loading="lazy"></picture>
+                <picture><source srcset="./images/banner-bg-800w.webp 800w, ./images/banner-bg-1400w.webp 1400w" type="image/webp" sizes="100vw"><img src="./images/banner-bg.png" alt="" width="1400" height="415" class="w-full h-full object-cover rounded-[24px] md:rounded-[36px] lg:rounded-[48px]" loading="lazy"></picture>
             </div>
             
             <div class="relative z-10 flex flex-col gap-3 md:gap-4">
@@ -240,7 +237,7 @@
             <!-- Карточка 1 -->
             <article class="flex flex-col gap-6 h-full">
                 <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
-                    <img src="./images/track-26661646.webp" alt="Снова почувствовать себя живым" class="w-full h-full object-cover" loading="lazy">
+                    <img src="./images/track-26661646.webp" alt="Снова почувствовать себя живым" class="w-full h-full object-cover" loading="lazy" width="520" height="520">
                 </div>
                 <div class="flex flex-col gap-5 flex-1 min-h-0">
                     <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
@@ -262,7 +259,7 @@
             <!-- Карточка 2 -->
             <article class="flex flex-col gap-6 h-full">
                 <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
-                    <img src="./images/track-76253769.webp" alt="Перестать себя обесценивать" class="w-full h-full object-cover" loading="lazy">
+                    <img src="./images/track-76253769.webp" alt="Перестать себя обесценивать" class="w-full h-full object-cover" loading="lazy" width="520" height="520">
                 </div>
                 <div class="flex flex-col gap-5 flex-1 min-h-0">
                     <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
@@ -284,7 +281,7 @@
             <!-- Карточка 3 -->
             <article class="flex flex-col gap-6 h-full">
                 <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
-                    <img src="./images/track-44469469.webp" alt="Как сохранять спокойствие, когда горит" class="w-full h-full object-cover" loading="lazy">
+                    <img src="./images/track-44469469.webp" alt="Как сохранять спокойствие, когда горит" class="w-full h-full object-cover" loading="lazy" width="520" height="520">
                 </div>
                 <div class="flex flex-col gap-5 flex-1 min-h-0">
                     <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
@@ -306,7 +303,7 @@
             <!-- Карточка 4 -->
             <article class="flex flex-col gap-6 h-full">
                 <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
-                    <img src="./images/track-93723656.webp" alt="Услышать тело вовремя" class="w-full h-full object-cover" loading="lazy">
+                    <img src="./images/track-93723656.webp" alt="Услышать тело вовремя" class="w-full h-full object-cover" loading="lazy" width="520" height="520">
                 </div>
                 <div class="flex flex-col gap-5 flex-1 min-h-0">
                     <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
@@ -328,7 +325,7 @@
             <!-- Карточка 5 -->
             <article class="flex flex-col gap-6 h-full">
                 <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
-                    <img src="./images/track-74231687.webp" alt="Как быть рядом, не теряя себя" class="w-full h-full object-cover" loading="lazy">
+                    <img src="./images/track-74231687.webp" alt="Как быть рядом, не теряя себя" class="w-full h-full object-cover" loading="lazy" width="520" height="520">
                 </div>
                 <div class="flex flex-col gap-5 flex-1 min-h-0">
                     <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
@@ -350,7 +347,7 @@
             <!-- Карточка 6 -->
             <article class="flex flex-col gap-6 h-full">
                 <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
-                    <img src="./images/track-26637965.webp" alt="Как понять, чего ты на самом деле хочешь" class="w-full h-full object-cover" loading="lazy">
+                    <img src="./images/track-26637965.webp" alt="Как понять, чего ты на самом деле хочешь" class="w-full h-full object-cover" loading="lazy" width="520" height="520">
                 </div>
                 <div class="flex flex-col gap-5 flex-1 min-h-0">
                     <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
@@ -372,7 +369,7 @@
             <!-- Карточка 7 -->
             <article class="flex flex-col gap-6 h-full">
                 <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
-                    <img src="./images/track-25944095.webp" alt="Как выйти из режима расфокуса" class="w-full h-full object-cover" loading="lazy">
+                    <img src="./images/track-25944095.webp" alt="Как выйти из режима расфокуса" class="w-full h-full object-cover" loading="lazy" width="520" height="520">
                 </div>
                 <div class="flex flex-col gap-5 flex-1 min-h-0">
                     <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
@@ -394,7 +391,7 @@
             <!-- Карточка 8 -->
             <article class="flex flex-col gap-6 h-full">
                 <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
-                    <img src="./images/track-83880346.webp" alt="Успокаиваться, когда накрывает" class="w-full h-full object-cover" loading="lazy">
+                    <img src="./images/track-83880346.webp" alt="Успокаиваться, когда накрывает" class="w-full h-full object-cover" loading="lazy" width="520" height="520">
                 </div>
                 <div class="flex flex-col gap-5 flex-1 min-h-0">
                     <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
@@ -416,7 +413,7 @@
             <!-- Карточка 9 -->
             <article class="flex flex-col gap-6 h-full">
                 <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
-                    <img src="./images/track-27327715.webp" alt="Как находить «своих» заново" class="w-full h-full object-cover" loading="lazy">
+                    <img src="./images/track-27327715.webp" alt="Как находить «своих» заново" class="w-full h-full object-cover" loading="lazy" width="520" height="520">
                 </div>
                 <div class="flex flex-col gap-5 flex-1 min-h-0">
                     <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
@@ -438,7 +435,7 @@
             <!-- Карточка 10 -->
             <article class="flex flex-col gap-6 h-full">
                 <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
-                    <img src="./images/track-28730559.webp" alt="Как перестать заедать стресс" class="w-full h-full object-cover" loading="lazy">
+                    <img src="./images/track-28730559.webp" alt="Как перестать заедать стресс" class="w-full h-full object-cover" loading="lazy" width="520" height="520">
                 </div>
                 <div class="flex flex-col gap-5 flex-1 min-h-0">
                     <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
@@ -460,7 +457,7 @@
             <!-- Карточка 11 -->
             <article class="flex flex-col gap-6 h-full">
                 <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
-                    <img src="./images/track-99276306.webp" alt="Как пройти через перемены и не потерять себя" class="w-full h-full object-cover" loading="lazy">
+                    <img src="./images/track-99276306.webp" alt="Как пройти через перемены и не потерять себя" class="w-full h-full object-cover" loading="lazy" width="520" height="520">
                 </div>
                 <div class="flex flex-col gap-5 flex-1 min-h-0">
                     <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
@@ -482,7 +479,7 @@
             <!-- Карточка 12 -->
             <article class="flex flex-col gap-6 h-full">
                 <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
-                    <img src="./images/track-74673825.webp" alt="Как обрести опору в себе" class="w-full h-full object-cover" loading="lazy">
+                    <img src="./images/track-74673825.webp" alt="Как обрести опору в себе" class="w-full h-full object-cover" loading="lazy" width="520" height="520">
                 </div>
                 <div class="flex flex-col gap-5 flex-1 min-h-0">
                     <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
@@ -504,7 +501,7 @@
             <!-- Карточка 13 -->
             <article class="flex flex-col gap-6 h-full">
                 <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
-                    <img src="./images/track-80041561.webp" alt="Как сдвинуться с мертвой точки" class="w-full h-full object-cover" loading="lazy">
+                    <img src="./images/track-80041561.webp" alt="Как сдвинуться с мертвой точки" class="w-full h-full object-cover" loading="lazy" width="520" height="520">
                 </div>
                 <div class="flex flex-col gap-5 flex-1 min-h-0">
                     <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
@@ -526,7 +523,7 @@
             <!-- Карточка 14 -->
             <article class="flex flex-col gap-6 h-full">
                 <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
-                    <img src="./images/track-23284050.webp" alt="Найти, что снова зажигает" class="w-full h-full object-cover" loading="lazy">
+                    <img src="./images/track-23284050.webp" alt="Найти, что снова зажигает" class="w-full h-full object-cover" loading="lazy" width="520" height="520">
                 </div>
                 <div class="flex flex-col gap-5 flex-1 min-h-0">
                     <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
@@ -548,7 +545,7 @@
             <!-- Карточка 15 -->
             <article class="flex flex-col gap-6 h-full">
                 <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
-                    <img src="./images/track-29997579.webp" alt="Сдвинуться с места" class="w-full h-full object-cover" loading="lazy">
+                    <img src="./images/track-29997579.webp" alt="Сдвинуться с места" class="w-full h-full object-cover" loading="lazy" width="520" height="520">
                 </div>
                 <div class="flex flex-col gap-5 flex-1 min-h-0">
                     <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
@@ -570,7 +567,7 @@
             <!-- Карточка 16 -->
             <article class="flex flex-col gap-6 h-full">
                 <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
-                    <img src="./images/track-50752190.webp" alt="Меньше ссор — больше взаимодействия" class="w-full h-full object-cover" loading="lazy">
+                    <img src="./images/track-50752190.webp" alt="Меньше ссор — больше взаимодействия" class="w-full h-full object-cover" loading="lazy" width="520" height="520">
                 </div>
                 <div class="flex flex-col gap-5 flex-1 min-h-0">
                     <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
@@ -592,7 +589,7 @@
             <!-- Карточка 17 -->
             <article class="flex flex-col gap-6 h-full">
                 <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
-                    <img src="./images/track-67165221.webp" alt="Быть с собой и с другими" class="w-full h-full object-cover" loading="lazy">
+                    <img src="./images/track-67165221.webp" alt="Быть с собой и с другими" class="w-full h-full object-cover" loading="lazy" width="520" height="520">
                 </div>
                 <div class="flex flex-col gap-5 flex-1 min-h-0">
                     <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
@@ -614,7 +611,7 @@
             <!-- Карточка 18 -->
             <article class="flex flex-col gap-6 h-full">
                 <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
-                    <img src="./images/track-87727154.webp" alt="Перестать жить в прошлом" class="w-full h-full object-cover" loading="lazy">
+                    <img src="./images/track-87727154.webp" alt="Перестать жить в прошлом" class="w-full h-full object-cover" loading="lazy" width="520" height="520">
                 </div>
                 <div class="flex flex-col gap-5 flex-1 min-h-0">
                     <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
@@ -636,7 +633,7 @@
             <!-- Карточка 19 -->
             <article class="flex flex-col gap-6 h-full">
                 <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
-                    <img src="./images/track-97607250.webp" alt="Как заботиться о себе без надрыва" class="w-full h-full object-cover" loading="lazy">
+                    <img src="./images/track-97607250.webp" alt="Как заботиться о себе без надрыва" class="w-full h-full object-cover" loading="lazy" width="520" height="520">
                 </div>
                 <div class="flex flex-col gap-5 flex-1 min-h-0">
                     <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
@@ -658,7 +655,7 @@
             <!-- Карточка 20 -->
             <article class="flex flex-col gap-6 h-full">
                 <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
-                    <img src="./images/track-82932980.webp" alt="Как отстаивать себя, не ломая отношения" class="w-full h-full object-cover" loading="lazy">
+                    <img src="./images/track-82932980.webp" alt="Как отстаивать себя, не ломая отношения" class="w-full h-full object-cover" loading="lazy" width="520" height="520">
                 </div>
                 <div class="flex flex-col gap-5 flex-1 min-h-0">
                     <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
@@ -680,7 +677,7 @@
             <!-- Карточка 21 -->
             <article class="flex flex-col gap-6 h-full">
                 <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
-                    <img src="./images/track-25743663.webp" alt="Как разобраться, когда все говорят разное" class="w-full h-full object-cover" loading="lazy">
+                    <img src="./images/track-25743663.webp" alt="Как разобраться, когда все говорят разное" class="w-full h-full object-cover" loading="lazy" width="520" height="520">
                 </div>
                 <div class="flex flex-col gap-5 flex-1 min-h-0">
                     <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
@@ -702,7 +699,7 @@
             <!-- Карточка 22 -->
             <article class="flex flex-col gap-6 h-full">
                 <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
-                    <img src="./images/track-11274564.webp" alt="Как говорить о сложном" class="w-full h-full object-cover" loading="lazy">
+                    <img src="./images/track-11274564.webp" alt="Как говорить о сложном" class="w-full h-full object-cover" loading="lazy" width="520" height="520">
                 </div>
                 <div class="flex flex-col gap-5 flex-1 min-h-0">
                     <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
@@ -724,7 +721,7 @@
             <!-- Карточка 23 -->
             <article class="flex flex-col gap-6 h-full">
                 <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
-                    <img src="./images/track-71578325.webp" alt="Как организовать себя без жесткости" class="w-full h-full object-cover" loading="lazy">
+                    <img src="./images/track-71578325.webp" alt="Как организовать себя без жесткости" class="w-full h-full object-cover" loading="lazy" width="520" height="520">
                 </div>
                 <div class="flex flex-col gap-5 flex-1 min-h-0">
                     <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
@@ -746,7 +743,7 @@
             <!-- Карточка 24 -->
             <article class="flex flex-col gap-6 h-full">
                 <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
-                    <img src="./images/track-23250997.webp" alt="Быть собой, даже если не все согласны" class="w-full h-full object-cover" loading="lazy">
+                    <img src="./images/track-23250997.webp" alt="Быть собой, даже если не все согласны" class="w-full h-full object-cover" loading="lazy" width="520" height="520">
                 </div>
                 <div class="flex flex-col gap-5 flex-1 min-h-0">
                     <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
@@ -768,7 +765,7 @@
             <!-- Карточка 25 -->
             <article class="flex flex-col gap-6 h-full">
                 <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
-                    <img src="./images/track-23929912.webp" alt="Как поддержать другого, когда сам на пределе" class="w-full h-full object-cover" loading="lazy">
+                    <img src="./images/track-23929912.webp" alt="Как поддержать другого, когда сам на пределе" class="w-full h-full object-cover" loading="lazy" width="520" height="520">
                 </div>
                 <div class="flex flex-col gap-5 flex-1 min-h-0">
                     <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
@@ -790,7 +787,7 @@
             <!-- Карточка 26 -->
             <article class="flex flex-col gap-6 h-full">
                 <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
-                    <img src="./images/track-49590475.webp" alt="Как делегировать и не сойти с ума" class="w-full h-full object-cover" loading="lazy">
+                    <img src="./images/track-49590475.webp" alt="Как делегировать и не сойти с ума" class="w-full h-full object-cover" loading="lazy" width="520" height="520">
                 </div>
                 <div class="flex flex-col gap-5 flex-1 min-h-0">
                     <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
@@ -812,7 +809,7 @@
             <!-- Карточка 27 -->
             <article class="flex flex-col gap-6 h-full">
                 <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
-                    <img src="./images/track-41777139.webp" alt="Перестать быть героем каждый день" class="w-full h-full object-cover" loading="lazy">
+                    <img src="./images/track-41777139.webp" alt="Перестать быть героем каждый день" class="w-full h-full object-cover" loading="lazy" width="520" height="520">
                 </div>
                 <div class="flex flex-col gap-5 flex-1 min-h-0">
                     <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
@@ -834,7 +831,7 @@
             <!-- Карточка 28 -->
             <article class="flex flex-col gap-6 h-full">
                 <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
-                    <img src="./images/track-69934983.webp" alt="Успокаиваться внутри, когда снаружи шумно" class="w-full h-full object-cover" loading="lazy">
+                    <img src="./images/track-69934983.webp" alt="Успокаиваться внутри, когда снаружи шумно" class="w-full h-full object-cover" loading="lazy" width="520" height="520">
                 </div>
                 <div class="flex flex-col gap-5 flex-1 min-h-0">
                     <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
@@ -856,7 +853,7 @@
             <!-- Карточка 29 -->
             <article class="flex flex-col gap-6 h-full">
                 <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
-                    <img src="./images/track-36039717.webp" alt="Мой режим: как вернуться в ритм" class="w-full h-full object-cover" loading="lazy">
+                    <img src="./images/track-36039717.webp" alt="Мой режим: как вернуться в ритм" class="w-full h-full object-cover" loading="lazy" width="520" height="520">
                 </div>
                 <div class="flex flex-col gap-5 flex-1 min-h-0">
                     <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
@@ -878,7 +875,7 @@
             <!-- Карточка 30 -->
             <article class="flex flex-col gap-6 h-full">
                 <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
-                    <img src="./images/track-20963502.webp" alt="Устоять в своем решении" class="w-full h-full object-cover" loading="lazy">
+                    <img src="./images/track-20963502.webp" alt="Устоять в своем решении" class="w-full h-full object-cover" loading="lazy" width="520" height="520">
                 </div>
                 <div class="flex flex-col gap-5 flex-1 min-h-0">
                     <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
@@ -900,7 +897,7 @@
             <!-- Карточка 31 -->
             <article class="flex flex-col gap-6 h-full">
                 <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
-                    <img src="./images/track-57541119.webp" alt="Научиться принимать положительную обратную связь" class="w-full h-full object-cover" loading="lazy">
+                    <img src="./images/track-57541119.webp" alt="Научиться принимать положительную обратную связь" class="w-full h-full object-cover" loading="lazy" width="520" height="520">
                 </div>
                 <div class="flex flex-col gap-5 flex-1 min-h-0">
                     <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
@@ -922,7 +919,7 @@
             <!-- Карточка 32 -->
             <article class="flex flex-col gap-6 h-full">
                 <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
-                    <img src="./images/track-27320347.webp" alt="Замечать и принимать позитивные моменты в жизни" class="w-full h-full object-cover" loading="lazy">
+                    <img src="./images/track-27320347.webp" alt="Замечать и принимать позитивные моменты в жизни" class="w-full h-full object-cover" loading="lazy" width="520" height="520">
                 </div>
                 <div class="flex flex-col gap-5 flex-1 min-h-0">
                     <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
@@ -944,7 +941,7 @@
             <!-- Карточка 33 -->
             <article class="flex flex-col gap-6 h-full">
                 <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
-                    <img src="./images/track-79615916.webp" alt="Разрешить себе поддержку" class="w-full h-full object-cover" loading="lazy">
+                    <img src="./images/track-79615916.webp" alt="Разрешить себе поддержку" class="w-full h-full object-cover" loading="lazy" width="520" height="520">
                 </div>
                 <div class="flex flex-col gap-5 flex-1 min-h-0">
                     <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
@@ -966,7 +963,7 @@
             <!-- Карточка 34 -->
             <article class="flex flex-col gap-6 h-full">
                 <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
-                    <img src="./images/track-11382413.webp" alt="Быть слабым и нужным" class="w-full h-full object-cover" loading="lazy">
+                    <img src="./images/track-11382413.webp" alt="Быть слабым и нужным" class="w-full h-full object-cover" loading="lazy" width="520" height="520">
                 </div>
                 <div class="flex flex-col gap-5 flex-1 min-h-0">
                     <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
@@ -988,7 +985,7 @@
             <!-- Карточка 35 -->
             <article class="flex flex-col gap-6 h-full">
                 <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
-                    <img src="./images/track-16568327.webp" alt="Как разрешить себе быть неидеальным" class="w-full h-full object-cover" loading="lazy">
+                    <img src="./images/track-16568327.webp" alt="Как разрешить себе быть неидеальным" class="w-full h-full object-cover" loading="lazy" width="520" height="520">
                 </div>
                 <div class="flex flex-col gap-5 flex-1 min-h-0">
                     <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
@@ -1010,7 +1007,7 @@
             <!-- Карточка 36 -->
             <article class="flex flex-col gap-6 h-full">
                 <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
-                    <img src="./images/track-28144951.webp" alt="Перестроиться, когда жизнь меняется" class="w-full h-full object-cover" loading="lazy">
+                    <img src="./images/track-28144951.webp" alt="Перестроиться, когда жизнь меняется" class="w-full h-full object-cover" loading="lazy" width="520" height="520">
                 </div>
                 <div class="flex flex-col gap-5 flex-1 min-h-0">
                     <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
@@ -1032,7 +1029,7 @@
             <!-- Карточка 37 -->
             <article class="flex flex-col gap-6 h-full">
                 <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
-                    <img src="./images/track-82668060.webp" alt="Как начать новый этап" class="w-full h-full object-cover" loading="lazy">
+                    <img src="./images/track-82668060.webp" alt="Как начать новый этап" class="w-full h-full object-cover" loading="lazy" width="520" height="520">
                 </div>
                 <div class="flex flex-col gap-5 flex-1 min-h-0">
                     <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
@@ -1054,7 +1051,7 @@
             <!-- Карточка 38 -->
             <article class="flex flex-col gap-6 h-full">
                 <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
-                    <img src="./images/track-89265689.webp" alt="Забота без тревоги" class="w-full h-full object-cover" loading="lazy">
+                    <img src="./images/track-89265689.webp" alt="Забота без тревоги" class="w-full h-full object-cover" loading="lazy" width="520" height="520">
                 </div>
                 <div class="flex flex-col gap-5 flex-1 min-h-0">
                     <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
@@ -1076,7 +1073,7 @@
             <!-- Карточка 39 -->
             <article class="flex flex-col gap-6 h-full">
                 <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
-                    <img src="./images/track-40333165.webp" alt="Вернуться в контакт с собой" class="w-full h-full object-cover" loading="lazy">
+                    <img src="./images/track-40333165.webp" alt="Вернуться в контакт с собой" class="w-full h-full object-cover" loading="lazy" width="520" height="520">
                 </div>
                 <div class="flex flex-col gap-5 flex-1 min-h-0">
                     <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
@@ -1098,7 +1095,7 @@
             <!-- Карточка 40 -->
             <article class="flex flex-col gap-6 h-full">
                 <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
-                    <img src="./images/track-88995331.webp" alt="Как отпустить контроль и не развалиться" class="w-full h-full object-cover" loading="lazy">
+                    <img src="./images/track-88995331.webp" alt="Как отпустить контроль и не развалиться" class="w-full h-full object-cover" loading="lazy" width="520" height="520">
                 </div>
                 <div class="flex flex-col gap-5 flex-1 min-h-0">
                     <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
@@ -1120,7 +1117,7 @@
             <!-- Карточка 41 -->
             <article class="flex flex-col gap-6 h-full">
                 <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
-                    <img src="./images/track-37533590.webp" alt="Помогать, не теряя себя" class="w-full h-full object-cover" loading="lazy">
+                    <img src="./images/track-37533590.webp" alt="Помогать, не теряя себя" class="w-full h-full object-cover" loading="lazy" width="520" height="520">
                 </div>
                 <div class="flex flex-col gap-5 flex-1 min-h-0">
                     <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
@@ -1142,7 +1139,7 @@
             <!-- Карточка 42 -->
             <article class="flex flex-col gap-6 h-full">
                 <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
-                    <img src="./images/track-26360854.webp" alt="Как договариваться без ссор" class="w-full h-full object-cover" loading="lazy">
+                    <img src="./images/track-26360854.webp" alt="Как договариваться без ссор" class="w-full h-full object-cover" loading="lazy" width="520" height="520">
                 </div>
                 <div class="flex flex-col gap-5 flex-1 min-h-0">
                     <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
@@ -1164,7 +1161,7 @@
             <!-- Карточка 43 -->
             <article class="flex flex-col gap-6 h-full">
                 <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
-                    <img src="./images/track-77970398.webp" alt="Снова быть рядом" class="w-full h-full object-cover" loading="lazy">
+                    <img src="./images/track-77970398.webp" alt="Снова быть рядом" class="w-full h-full object-cover" loading="lazy" width="520" height="520">
                 </div>
                 <div class="flex flex-col gap-5 flex-1 min-h-0">
                     <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
@@ -1195,7 +1192,7 @@
             <!-- Мобильно: вертикально, по центру. Десктоп: картинка слева -->
             <div class="flex-1 md:flex-none md:w-[min(45%,400px)] flex flex-col items-center md:items-start justify-center">
                 <div class="w-full max-w-[280px] md:max-w-full aspect-square rounded-[28px] overflow-hidden mb-6 md:mb-0 shrink-0">
-                    <img id="trackModalImg" src="" alt="" class="w-full h-full object-cover" loading="lazy">
+                    <img id="trackModalImg" src="" alt="" class="w-full h-full object-cover" loading="lazy" width="520" height="520">
                 </div>
             </div>
             <!-- Контент: мобильно по центру, десктоп справа -->

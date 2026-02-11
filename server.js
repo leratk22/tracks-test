@@ -43,7 +43,12 @@ const server = http.createServer(async (req, res) => {
   }
 
   let filePath = req.url === '/' ? '/index.html' : req.url;
-  filePath = path.join(__dirname, filePath.replace(/\?.*$/, ''));
+  const cleanUrl = filePath.replace(/\?.*$/, '');
+  if (cleanUrl.startsWith('/fonts/')) {
+    filePath = path.join(__dirname, 'public', cleanUrl);
+  } else {
+    filePath = path.join(__dirname, cleanUrl);
+  }
   if (!path.resolve(filePath).startsWith(path.resolve(__dirname))) {
     res.writeHead(403);
     res.end();
