@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tracks - Моментальная поддержка</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Euclid Circular A font */
+        @font-face {
+            font-family: 'Euclid Circular A';
+            src: url('https://cdn.jsdelivr.net/gh/Fonthausen/EuclidCircularA@master/font/EuclidCircularA-Regular.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Euclid Circular A';
+            src: url('https://cdn.jsdelivr.net/gh/Fonthausen/EuclidCircularA@master/font/EuclidCircularA-Medium.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Euclid Circular A';
+            src: url('https://cdn.jsdelivr.net/gh/Fonthausen/EuclidCircularA@master/font/EuclidCircularA-Semibold.woff2') format('woff2');
+            font-weight: 600;
+            font-style: normal;
+        }
+        
+        body {
+            font-family: 'Euclid Circular A', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Скрыть полосу прокрутки карусели */
+        .carousel-container {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .carousel-container::-webkit-scrollbar {
+            display: none;
+        }
+        
+        /* Модальное окно трека */
+        .track-modal-backdrop {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+        }
+        .track-modal-backdrop.is-open {
+            opacity: 1;
+            visibility: visible;
+        }
+        .track-modal-panel {
+            transform: scale(0.95) translateY(-10px);
+            opacity: 0;
+            transition: transform 0.25s ease, opacity 0.25s ease;
+        }
+        .track-modal-backdrop.is-open .track-modal-panel {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cream: '#fff9e6',
+                        yellow: '#fedb50',
+                        orange: '#fe741e',
+                    },
+                    spacing: {
+                        '15': '60px',
+                        '30': '120px',
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-white">
+    <!-- Секция 1: Моментальная поддержка -->
+    <section class="relative min-h-0 md:min-h-[880px] lg:h-[1024px] flex flex-col md:flex-row md:items-center md:justify-start px-4 sm:px-6 md:px-10 lg:px-15 pt-6 pb-8 sm:pt-8 sm:pb-10 md:py-12 lg:py-10 overflow-hidden bg-cream">
+        <!-- Фон только на десктопе (md и выше) -->
+        <div class="absolute inset-0 pointer-events-none hidden md:block">
+            <img src="./public/images/hero-bg.png" alt="" class="w-full h-full object-cover">
+        </div>
+        <!-- Коллаж над текстом — только на мобильных, увеличен более чем в 2 раза -->
+        <div class="relative z-10 w-full mt-0 mb-4 sm:mb-6 md:hidden">
+            <img src="./public/images/hero-collage.png" alt="" class="w-full max-h-[440px] sm:max-h-[560px] object-contain object-center">
+        </div>
+        <!-- Текст -->
+        <div class="relative z-10 w-full max-w-[538px] pr-4 md:pr-0">
+            <h1 class="text-[28px] sm:text-[36px] md:text-[52px] md:leading-none md:tracking-[-1.04px] lg:text-[72px] lg:tracking-[-1.44px] font-medium leading-[1.1] md:leading-none text-black mb-4 sm:mb-6 md:mb-6 break-words">
+                Моментальная поддержка
+            </h1>
+            <p class="text-[15px] sm:text-base md:text-xl md:leading-[28px] lg:text-2xl lg:leading-[30px] leading-[22px] sm:leading-[24px] text-black max-w-[90%] md:max-w-none">
+                Помогите себе справиться с раздражением<br class="hidden md:block"> и тревогой, расслабиться перед сном, настроиться на важный разговор, сфокусироваться на работе, ощутить прилив энергии и многое другое.
+            </p>
+        </div>
+    </section>
+
+    <!-- Секция 2: Управляйте своим психологическим состоянием -->
+    <section class="bg-white px-6 md:px-10 lg:px-15 py-12 md:py-20 lg:py-30">
+        <!-- Заголовок и описание -->
+        <div class="flex flex-col lg:flex-row gap-6 lg:gap-16 items-start mb-10 md:mb-12">
+            <h2 class="flex-1 text-[32px] md:text-[48px] lg:text-[72px] font-medium leading-none tracking-[-0.64px] md:tracking-[-0.96px] lg:tracking-[-1.44px] text-black">
+                Управляйте своим психологическим состоянием
+            </h2>
+            <div class="flex-1 flex flex-col gap-2.5 items-start lg:items-end">
+                <p class="text-base md:text-xl lg:text-2xl leading-[24px] md:leading-[28px] lg:leading-[30px] text-black w-full">
+                    Помогите себе справиться с раздражением или тревогой, расслабиться перед сном, настроиться на важный разговор, сфокусироваться на работе, ощутить прилив энергии и многое другое.
+                </p>
+                <!-- Кнопки навигации карусели: скрыты на мобильных (скролл свайпом) -->
+                <div class="hidden md:flex gap-3 mt-4">
+                    <button onclick="scrollCarousel('left')" class="w-12 h-12 md:w-[61px] md:h-[61px] flex items-center justify-center hover:opacity-80 transition-opacity cursor-pointer">
+                        <img src="./public/images/arrow-left.svg" alt="Предыдущий" class="w-full h-full">
+                    </button>
+                    <button onclick="scrollCarousel('right')" class="w-12 h-12 md:w-[61px] md:h-[61px] flex items-center justify-center hover:opacity-80 transition-opacity cursor-pointer">
+                        <img src="./public/images/arrow-right.svg" alt="Следующий" class="w-full h-full">
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Карусель -->
+        <div class="relative">
+            <div id="carousel" class="carousel-container flex gap-4 md:gap-3 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4 items-stretch">
+                <!-- Карточка 1: Тесты -->
+                <div class="flex-none w-[260px] md:w-[300px] lg:w-[343px] min-h-[560px] md:min-h-[640px] lg:min-h-[708px] rounded-[32px] lg:rounded-[40px] p-4 md:p-5 flex flex-col gap-4 snap-start" style="background-color: #fedb50;">
+                    <div class="w-full h-[420px] md:h-[480px] lg:h-[533px] flex-none overflow-hidden rounded-[20px] lg:rounded-[24px]">
+                        <img src="./public/images/slide-1.png" alt="Тесты" class="w-full h-full object-cover" onerror="this.src='./public/images/phone-mockup.png'">
+                    </div>
+                    <div class="flex-1 flex flex-col gap-2.5 min-h-0">
+                        <h3 class="text-[19.522px] font-semibold leading-[1.15] text-black">Тесты</h3>
+                        <p class="text-[17px] leading-[1.15] text-black">Узнайте о себе больше и получайте рекомендации, на что обратить внимание</p>
+                    </div>
+                </div>
+
+                <!-- Карточка 2: Трекер состояния -->
+                <div class="flex-none w-[260px] md:w-[300px] lg:w-[343px] min-h-[560px] md:min-h-[640px] lg:min-h-[708px] rounded-[32px] lg:rounded-[40px] p-4 md:p-5 flex flex-col gap-4 snap-start" style="background-color: #FEEBC1;">
+                    <div class="w-full h-[420px] md:h-[480px] lg:h-[533px] flex-none overflow-hidden rounded-[20px] lg:rounded-[24px]">
+                        <img src="./public/images/slide-3.png" alt="Трекер состояния" class="w-full h-full object-cover" onerror="this.src='./public/images/phone-mockup.png'">
+                    </div>
+                    <div class="flex-1 flex flex-col gap-2.5 min-h-0">
+                        <h3 class="text-[19.522px] font-semibold leading-[1.15] text-black">Трекер состояния</h3>
+                        <p class="text-[17px] leading-[1.15] text-black">Отслеживайте свое эмоциональное состояние и находите закономерности</p>
+                    </div>
+                </div>
+
+                <!-- Карточка 3: Статьи -->
+                <div class="flex-none w-[260px] md:w-[300px] lg:w-[343px] min-h-[560px] md:min-h-[640px] lg:min-h-[708px] rounded-[32px] lg:rounded-[40px] p-4 md:p-5 flex flex-col gap-4 snap-start" style="background-color: #EAEFF8;">
+                    <div class="w-full h-[420px] md:h-[480px] lg:h-[533px] flex-none overflow-hidden rounded-[20px] lg:rounded-[24px]">
+                        <img src="./public/images/slide-2.png" alt="Статьи" class="w-full h-full object-cover" onerror="this.src='./public/images/phone-mockup.png'">
+                    </div>
+                    <div class="flex-1 flex flex-col gap-2.5 min-h-0">
+                        <h3 class="text-[19.522px] font-semibold leading-[1.15] text-black">Статьи</h3>
+                        <p class="text-[17px] leading-[1.15] text-black">Читайте полезные материалы от профессиональных психологов</p>
+                    </div>
+                </div>
+
+                <!-- Карточка 4: Аутогенные (slide-6) — фото на весь фон, текст белый -->
+                <div class="flex-none w-[260px] md:w-[300px] lg:w-[343px] min-h-[560px] md:min-h-[640px] lg:min-h-[708px] rounded-[32px] lg:rounded-[40px] overflow-hidden snap-start relative">
+                    <img src="./public/images/slide-6.png" alt="Аутогенные тренировки" class="absolute inset-0 w-full h-full object-cover" onerror="this.src='./public/images/phone-mockup.png'">
+                    <div class="absolute inset-0 bg-black/40 rounded-[32px] lg:rounded-[40px]"></div>
+                    <div class="relative z-10 h-full flex flex-col justify-end p-4 md:p-5">
+                        <h3 class="text-[19.522px] font-semibold leading-[1.15] text-white">Аутогенные тренировки</h3>
+                        <p class="text-[17px] leading-[1.15] text-white mt-2.5">Снимайте телесное и эмоциональное напряжение через управление дыханием и фокусом внимания</p>
+                    </div>
+                </div>
+
+                <!-- Карточка 5: Восстановительные ритмы -->
+                <div class="flex-none w-[260px] md:w-[300px] lg:w-[343px] min-h-[560px] md:min-h-[640px] lg:min-h-[708px] rounded-[32px] lg:rounded-[40px] p-4 md:p-5 flex flex-col gap-4 snap-start" style="background-color: #FEEBC1;">
+                    <div class="w-full h-[420px] md:h-[480px] lg:h-[533px] flex-none overflow-hidden rounded-[20px] lg:rounded-[24px]">
+                        <img src="./public/images/slide-4.png" alt="Восстановительные ритмы" class="w-full h-full object-cover" onerror="this.src='./public/images/phone-mockup.png'">
+                    </div>
+                    <div class="flex-1 flex flex-col gap-2.5 min-h-0">
+                        <h3 class="text-[19.522px] font-semibold leading-[1.15] text-black">Восстановительные ритмы</h3>
+                        <p class="text-[17px] leading-[1.15] text-black">Используйте специальные ритмы для восстановления энергии</p>
+                    </div>
+                </div>
+
+                <!-- Карточка 6: Медитации -->
+                <div class="flex-none w-[260px] md:w-[300px] lg:w-[343px] min-h-[560px] md:min-h-[640px] lg:min-h-[708px] rounded-[32px] lg:rounded-[40px] p-4 md:p-5 flex flex-col gap-4 snap-start" style="background-color: #FFB800;">
+                    <div class="w-full h-[420px] md:h-[480px] lg:h-[533px] flex-none overflow-hidden rounded-[20px] lg:rounded-[24px]">
+                        <img src="./public/images/slide-7.png" alt="Медитации" class="w-full h-full object-cover" onerror="this.src='./public/images/phone-mockup.png'">
+                    </div>
+                    <div class="flex-1 flex flex-col gap-2.5 min-h-0">
+                        <h3 class="text-[19.522px] font-semibold leading-[1.15] text-black">Медитации</h3>
+                        <p class="text-[17px] leading-[1.15] text-black">Практикуйте медитации для улучшения ментального здоровья</p>
+                    </div>
+                </div>
+
+                <!-- Карточка 7: Практики самопомощи -->
+                <div class="flex-none w-[260px] md:w-[300px] lg:w-[343px] min-h-[560px] md:min-h-[640px] lg:min-h-[708px] rounded-[32px] lg:rounded-[40px] p-4 md:p-5 flex flex-col gap-4 snap-start" style="background-color: #FEEBC1;">
+                    <div class="w-full h-[420px] md:h-[480px] lg:h-[533px] flex-none overflow-hidden rounded-[20px] lg:rounded-[24px]">
+                        <img src="./public/images/slide-5.png" alt="Практики самопомощи" class="w-full h-full object-cover" onerror="this.src='./public/images/phone-mockup.png'">
+                    </div>
+                    <div class="flex-1 flex flex-col gap-2.5 min-h-0">
+                        <h3 class="text-[19.522px] font-semibold leading-[1.15] text-black">Практики самопомощи</h3>
+                        <p class="text-[17px] leading-[1.15] text-black">Изучайте эффективные техники для самостоятельной работы</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Секция 3: Пошаговые планы самоподдержки -->
+    <section class="bg-white px-4 sm:px-6 md:px-10 lg:px-15 pb-12 md:pb-20 lg:pb-30">
+        <!-- Жёлтый баннер -->
+        <div class="relative min-h-[280px] md:h-[320px] lg:h-[360px] rounded-[24px] md:rounded-[36px] lg:rounded-[48px] px-5 sm:px-8 md:px-12 lg:px-15 py-8 md:py-10 lg:py-12 mb-8 md:mb-12 overflow-hidden">
+            <div class="absolute inset-0 bg-yellow rounded-[24px] md:rounded-[36px] lg:rounded-[48px]">
+                <img src="./public/images/banner-bg.png" alt="" class="w-full h-full object-cover rounded-[24px] md:rounded-[36px] lg:rounded-[48px]">
+            </div>
+            
+            <div class="relative z-10 flex flex-col gap-3 md:gap-4">
+                <h2 class="text-[28px] sm:text-[36px] md:text-[48px] lg:text-[64px] font-medium leading-[1.15] md:leading-none tracking-tight md:tracking-[-1.28px] text-black">
+                    Пошаговые планы самоподдержки
+                </h2>
+                <p class="text-base md:text-xl lg:text-2xl leading-[22px] md:leading-[28px] lg:leading-[30px] text-black max-w-xl">
+                    Проверенные инструменты, подобранные профессионалами, помогут справиться с самыми частыми жизненными ситуациями
+                </p>
+            </div>
+        </div>
+
+        <!-- Сетка карточек: 1 колонка на мобильных, 2 на планшете, 3 на десктопе -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7 md:gap-x-9 md:gap-y-10 items-stretch">
+            <!-- Карточка 1 -->
+            <article class="flex flex-col gap-6 h-full">
+                <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
+                    <img src="./public/images/track-26661646.webp" alt="Снова почувствовать себя живым" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col gap-5 flex-1 min-h-0">
+                    <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
+                    <div class="flex flex-col gap-3 flex-1 min-h-0">
+                        <h3 class="text-[22px] font-medium leading-6 text-black">Снова почувствовать себя живым</h3>
+                        <p class="text-base leading-normal text-black">Как не жить на автомате и начать радоваться мелочам. Подойдет, если ничего не радует, а отдых не восстанавливает силы</p>
+                    </div>
+                    <div class="flex gap-3 mt-auto">
+                        <button type="button" onclick="openTrackModal(this)" class="flex-1 bg-yellow rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:opacity-90 transition-opacity cursor-pointer">
+                            Подробнее
+                        </button>
+                        <button type="button" onclick="buyTrack(this)" class="flex-1 border-2 border-black rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:bg-black hover:text-white transition-colors cursor-pointer">
+                            Купить
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 2 -->
+            <article class="flex flex-col gap-6 h-full">
+                <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
+                    <img src="./public/images/track-76253769.webp" alt="Перестать себя обесценивать" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col gap-5 flex-1 min-h-0">
+                    <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
+                    <div class="flex flex-col gap-3 flex-1 min-h-0">
+                        <h3 class="text-[22px] font-medium leading-6 text-black">Перестать себя обесценивать</h3>
+                        <p class="text-base leading-normal text-black">Как подружиться с собой и поверить в собственные силы. Для тех, кто устал от сравнений и внутреннего критика</p>
+                    </div>
+                    <div class="flex gap-3 mt-auto">
+                        <button type="button" onclick="openTrackModal(this)" class="flex-1 bg-yellow rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:opacity-90 transition-opacity cursor-pointer">
+                            Подробнее
+                        </button>
+                        <button type="button" onclick="buyTrack(this)" class="flex-1 border-2 border-black rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:bg-black hover:text-white transition-colors cursor-pointer">
+                            Купить
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 3 -->
+            <article class="flex flex-col gap-6 h-full">
+                <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
+                    <img src="./public/images/track-44469469.webp" alt="Как сохранять спокойствие, когда горит" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col gap-5 flex-1 min-h-0">
+                    <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
+                    <div class="flex flex-col gap-3 flex-1 min-h-0">
+                        <h3 class="text-[22px] font-medium leading-6 text-black">Как сохранять спокойствие, когда горит</h3>
+                        <p class="text-base leading-normal text-black">Как не срываться, когда все валится из рук. Для тех, кто работает в цейтноте: задач много, времени мало, клиенты торопят</p>
+                    </div>
+                    <div class="flex gap-3 mt-auto">
+                        <button type="button" onclick="openTrackModal(this)" class="flex-1 bg-yellow rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:opacity-90 transition-opacity cursor-pointer">
+                            Подробнее
+                        </button>
+                        <button type="button" onclick="buyTrack(this)" class="flex-1 border-2 border-black rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:bg-black hover:text-white transition-colors cursor-pointer">
+                            Купить
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 4 -->
+            <article class="flex flex-col gap-6 h-full">
+                <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
+                    <img src="./public/images/track-93723656.webp" alt="Услышать тело вовремя" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col gap-5 flex-1 min-h-0">
+                    <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
+                    <div class="flex flex-col gap-3 flex-1 min-h-0">
+                        <h3 class="text-[22px] font-medium leading-6 text-black">Услышать тело вовремя</h3>
+                        <p class="text-base leading-normal text-black">Замечать сигналы тела и восстанавливать силы. Особенно нужно при спешке, пропущенных обедах и работе через «не могу»</p>
+                    </div>
+                    <div class="flex gap-3 mt-auto">
+                        <button type="button" onclick="openTrackModal(this)" class="flex-1 bg-yellow rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:opacity-90 transition-opacity cursor-pointer">
+                            Подробнее
+                        </button>
+                        <button type="button" onclick="buyTrack(this)" class="flex-1 border-2 border-black rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:bg-black hover:text-white transition-colors cursor-pointer">
+                            Купить
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 5 -->
+            <article class="flex flex-col gap-6 h-full">
+                <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
+                    <img src="./public/images/track-74231687.webp" alt="Как быть рядом, не теряя себя" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col gap-5 flex-1 min-h-0">
+                    <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
+                    <div class="flex flex-col gap-3 flex-1 min-h-0">
+                        <h3 class="text-[22px] font-medium leading-6 text-black">Как быть рядом, не теряя себя</h3>
+                        <p class="text-base leading-normal text-black">Снизить стресс, выстроить границы и уважение к себе без вины. Подходит, когда забота о близких становится тяжелой</p>
+                    </div>
+                    <div class="flex gap-3 mt-auto">
+                        <button type="button" onclick="openTrackModal(this)" class="flex-1 bg-yellow rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:opacity-90 transition-opacity cursor-pointer">
+                            Подробнее
+                        </button>
+                        <button type="button" onclick="buyTrack(this)" class="flex-1 border-2 border-black rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:bg-black hover:text-white transition-colors cursor-pointer">
+                            Купить
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 6 -->
+            <article class="flex flex-col gap-6 h-full">
+                <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
+                    <img src="./public/images/track-26637965.webp" alt="Как понять, чего ты на самом деле хочешь" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col gap-5 flex-1 min-h-0">
+                    <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
+                    <div class="flex flex-col gap-3 flex-1 min-h-0">
+                        <h3 class="text-[22px] font-medium leading-6 text-black">Как понять, чего ты на самом деле хочешь</h3>
+                        <p class="text-base leading-normal text-black">Перестать сомневаться и начать уверенно принимать решения. Для тех, кто запутался и ищет свой путь</p>
+                    </div>
+                    <div class="flex gap-3 mt-auto">
+                        <button type="button" onclick="openTrackModal(this)" class="flex-1 bg-yellow rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:opacity-90 transition-opacity cursor-pointer">
+                            Подробнее
+                        </button>
+                        <button type="button" onclick="buyTrack(this)" class="flex-1 border-2 border-black rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:bg-black hover:text-white transition-colors cursor-pointer">
+                            Купить
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 7 -->
+            <article class="flex flex-col gap-6 h-full">
+                <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
+                    <img src="./public/images/track-25944095.webp" alt="Как выйти из режима расфокуса" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col gap-5 flex-1 min-h-0">
+                    <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
+                    <div class="flex flex-col gap-3 flex-1 min-h-0">
+                        <h3 class="text-[22px] font-medium leading-6 text-black">Как выйти из режима расфокуса</h3>
+                        <p class="text-base leading-normal text-black">Как не отвлекаться, почувствовать контроль и работать спокойно. Подойдет, когда мозг кипит от задач и сложно сосредоточиться</p>
+                    </div>
+                    <div class="flex gap-3 mt-auto">
+                        <button type="button" onclick="openTrackModal(this)" class="flex-1 bg-yellow rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:opacity-90 transition-opacity cursor-pointer">
+                            Подробнее
+                        </button>
+                        <button type="button" onclick="buyTrack(this)" class="flex-1 border-2 border-black rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:bg-black hover:text-white transition-colors cursor-pointer">
+                            Купить
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 8 -->
+            <article class="flex flex-col gap-6 h-full">
+                <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
+                    <img src="./public/images/track-83880346.webp" alt="Успокаиваться, когда накрывает" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col gap-5 flex-1 min-h-0">
+                    <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
+                    <div class="flex flex-col gap-3 flex-1 min-h-0">
+                        <h3 class="text-[22px] font-medium leading-6 text-black">Успокаиваться, когда накрывает</h3>
+                        <p class="text-base leading-normal text-black">Когда накрывает тревога: как успокоиться и собраться. Полезно перед важной встречей, выступлением и в тяжелые периоды</p>
+                    </div>
+                    <div class="flex gap-3 mt-auto">
+                        <button type="button" onclick="openTrackModal(this)" class="flex-1 bg-yellow rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:opacity-90 transition-opacity cursor-pointer">
+                            Подробнее
+                        </button>
+                        <button type="button" onclick="buyTrack(this)" class="flex-1 border-2 border-black rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:bg-black hover:text-white transition-colors cursor-pointer">
+                            Купить
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 9 -->
+            <article class="flex flex-col gap-6 h-full">
+                <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
+                    <img src="./public/images/track-27327715.webp" alt="Как находить «своих» заново" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col gap-5 flex-1 min-h-0">
+                    <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
+                    <div class="flex flex-col gap-3 flex-1 min-h-0">
+                        <h3 class="text-[22px] font-medium leading-6 text-black">Как находить «своих» заново</h3>
+                        <p class="text-base leading-normal text-black">Справиться с одиночеством и найти близких людей. Станет поддержкой, если рядом нет тех, с кем можно быть настоящим</p>
+                    </div>
+                    <div class="flex gap-3 mt-auto">
+                        <button type="button" onclick="openTrackModal(this)" class="flex-1 bg-yellow rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:opacity-90 transition-opacity cursor-pointer">
+                            Подробнее
+                        </button>
+                        <button type="button" onclick="buyTrack(this)" class="flex-1 border-2 border-black rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:bg-black hover:text-white transition-colors cursor-pointer">
+                            Купить
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 10 -->
+            <article class="flex flex-col gap-6 h-full">
+                <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
+                    <img src="./public/images/track-28730559.webp" alt="Как перестать заедать стресс" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col gap-5 flex-1 min-h-0">
+                    <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
+                    <div class="flex flex-col gap-3 flex-1 min-h-0">
+                        <h3 class="text-[22px] font-medium leading-6 text-black">Как перестать заедать стресс</h3>
+                        <p class="text-base leading-normal text-black">Перестать заедать стресс и почувствовать спокойствие. Поддержит, когда вместо отдыха — сладости, перекусы и лишние чашки кофе</p>
+                    </div>
+                    <div class="flex gap-3 mt-auto">
+                        <button type="button" onclick="openTrackModal(this)" class="flex-1 bg-yellow rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:opacity-90 transition-opacity cursor-pointer">
+                            Подробнее
+                        </button>
+                        <button type="button" onclick="buyTrack(this)" class="flex-1 border-2 border-black rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:bg-black hover:text-white transition-colors cursor-pointer">
+                            Купить
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 11 -->
+            <article class="flex flex-col gap-6 h-full">
+                <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
+                    <img src="./public/images/track-99276306.webp" alt="Как пройти через перемены и не потерять себя" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col gap-5 flex-1 min-h-0">
+                    <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
+                    <div class="flex flex-col gap-3 flex-1 min-h-0">
+                        <h3 class="text-[22px] font-medium leading-6 text-black">Как пройти через перемены и не потерять себя</h3>
+                        <p class="text-base leading-normal text-black">Прожить кризис, справиться со стрессом и сохранить себя. Поможет в сложные периоды: развод, потеря работы, переезд</p>
+                    </div>
+                    <div class="flex gap-3 mt-auto">
+                        <button type="button" onclick="openTrackModal(this)" class="flex-1 bg-yellow rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:opacity-90 transition-opacity cursor-pointer">
+                            Подробнее
+                        </button>
+                        <button type="button" onclick="buyTrack(this)" class="flex-1 border-2 border-black rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:bg-black hover:text-white transition-colors cursor-pointer">
+                            Купить
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 12 -->
+            <article class="flex flex-col gap-6 h-full">
+                <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
+                    <img src="./public/images/track-74673825.webp" alt="Как обрести опору в себе" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col gap-5 flex-1 min-h-0">
+                    <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
+                    <div class="flex flex-col gap-3 flex-1 min-h-0">
+                        <h3 class="text-[22px] font-medium leading-6 text-black">Как обрести опору в себе</h3>
+                        <p class="text-base leading-normal text-black">Укрепить веру в себя, снизить тревогу и чувство неопределенности. Полезен, если будущее тревожит и кажется, что все рушится</p>
+                    </div>
+                    <div class="flex gap-3 mt-auto">
+                        <button type="button" onclick="openTrackModal(this)" class="flex-1 bg-yellow rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:opacity-90 transition-opacity cursor-pointer">
+                            Подробнее
+                        </button>
+                        <button type="button" onclick="buyTrack(this)" class="flex-1 border-2 border-black rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:bg-black hover:text-white transition-colors cursor-pointer">
+                            Купить
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 13 -->
+            <article class="flex flex-col gap-6 h-full">
+                <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
+                    <img src="./public/images/track-80041561.webp" alt="Как сдвинуться с мертвой точки" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col gap-5 flex-1 min-h-0">
+                    <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
+                    <div class="flex flex-col gap-3 flex-1 min-h-0">
+                        <h3 class="text-[22px] font-medium leading-6 text-black">Как сдвинуться с мертвой точки</h3>
+                        <p class="text-base leading-normal text-black">Для тех, кто застрял между «хочу» и «делаю»: как не сопротивляться, выйти из зоны комфорта и начать действовать</p>
+                    </div>
+                    <div class="flex gap-3 mt-auto">
+                        <button type="button" onclick="openTrackModal(this)" class="flex-1 bg-yellow rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:opacity-90 transition-opacity cursor-pointer">
+                            Подробнее
+                        </button>
+                        <button type="button" onclick="buyTrack(this)" class="flex-1 border-2 border-black rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:bg-black hover:text-white transition-colors cursor-pointer">
+                            Купить
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 14 -->
+            <article class="flex flex-col gap-6 h-full">
+                <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
+                    <img src="./public/images/track-23284050.webp" alt="Найти, что снова зажигает" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col gap-5 flex-1 min-h-0">
+                    <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
+                    <div class="flex flex-col gap-3 flex-1 min-h-0">
+                        <h3 class="text-[22px] font-medium leading-6 text-black">Найти, что снова зажигает</h3>
+                        <p class="text-base leading-normal text-black">Справиться с апатией, вернуть энергию и интерес к жизни. Для тех, кого ничего не радует и все кажется бессмысленным</p>
+                    </div>
+                    <div class="flex gap-3 mt-auto">
+                        <button type="button" onclick="openTrackModal(this)" class="flex-1 bg-yellow rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:opacity-90 transition-opacity cursor-pointer">
+                            Подробнее
+                        </button>
+                        <button type="button" onclick="buyTrack(this)" class="flex-1 border-2 border-black rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:bg-black hover:text-white transition-colors cursor-pointer">
+                            Купить
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 15 -->
+            <article class="flex flex-col gap-6 h-full">
+                <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
+                    <img src="./public/images/track-29997579.webp" alt="Сдвинуться с места" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col gap-5 flex-1 min-h-0">
+                    <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
+                    <div class="flex flex-col gap-3 flex-1 min-h-0">
+                        <h3 class="text-[22px] font-medium leading-6 text-black">Сдвинуться с места</h3>
+                        <p class="text-base leading-normal text-black">Как перестать откладывать и начать делать. Подойдет, когда надоела прокрастинация, апатия и страх ошибок</p>
+                    </div>
+                    <div class="flex gap-3 mt-auto">
+                        <button type="button" onclick="openTrackModal(this)" class="flex-1 bg-yellow rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:opacity-90 transition-opacity cursor-pointer">
+                            Подробнее
+                        </button>
+                        <button type="button" onclick="buyTrack(this)" class="flex-1 border-2 border-black rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:bg-black hover:text-white transition-colors cursor-pointer">
+                            Купить
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 16 -->
+            <article class="flex flex-col gap-6 h-full">
+                <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
+                    <img src="./public/images/track-50752190.webp" alt="Меньше ссор — больше взаимодействия" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col gap-5 flex-1 min-h-0">
+                    <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
+                    <div class="flex flex-col gap-3 flex-1 min-h-0">
+                        <h3 class="text-[22px] font-medium leading-6 text-black">Меньше ссор — больше взаимодействия</h3>
+                        <p class="text-base leading-normal text-black">Как вернуть понимание и наладить диалог. Для тех, кому трудно договариваться и разговоры часто переходят в спор</p>
+                    </div>
+                    <div class="flex gap-3 mt-auto">
+                        <button type="button" onclick="openTrackModal(this)" class="flex-1 bg-yellow rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:opacity-90 transition-opacity cursor-pointer">
+                            Подробнее
+                        </button>
+                        <button type="button" onclick="buyTrack(this)" class="flex-1 border-2 border-black rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:bg-black hover:text-white transition-colors cursor-pointer">
+                            Купить
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 17 -->
+            <article class="flex flex-col gap-6 h-full">
+                <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
+                    <img src="./public/images/track-67165221.webp" alt="Быть с собой и с другими" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col gap-5 flex-1 min-h-0">
+                    <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
+                    <div class="flex flex-col gap-3 flex-1 min-h-0">
+                        <h3 class="text-[22px] font-medium leading-6 text-black">Быть с собой и с другими</h3>
+                        <p class="text-base leading-normal text-black">Справиться с одиночеством, укрепить уверенность и наладить отношения. Поможет, если не хватает поддержки и трудно с близкими</p>
+                    </div>
+                    <div class="flex gap-3 mt-auto">
+                        <button type="button" onclick="openTrackModal(this)" class="flex-1 bg-yellow rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:opacity-90 transition-opacity cursor-pointer">
+                            Подробнее
+                        </button>
+                        <button type="button" onclick="buyTrack(this)" class="flex-1 border-2 border-black rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:bg-black hover:text-white transition-colors cursor-pointer">
+                            Купить
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 18 -->
+            <article class="flex flex-col gap-6 h-full">
+                <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
+                    <img src="./public/images/track-87727154.webp" alt="Перестать жить в прошлом" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col gap-5 flex-1 min-h-0">
+                    <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
+                    <div class="flex flex-col gap-3 flex-1 min-h-0">
+                        <h3 class="text-[22px] font-medium leading-6 text-black">Перестать жить в прошлом</h3>
+                        <p class="text-base leading-normal text-black">Отпустить, справиться с сожалением и вернуться в настоящее. Поможет, когда мучает вина и не отпускают старые воспоминания</p>
+                    </div>
+                    <div class="flex gap-3 mt-auto">
+                        <button type="button" onclick="openTrackModal(this)" class="flex-1 bg-yellow rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:opacity-90 transition-opacity cursor-pointer">
+                            Подробнее
+                        </button>
+                        <button type="button" onclick="buyTrack(this)" class="flex-1 border-2 border-black rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:bg-black hover:text-white transition-colors cursor-pointer">
+                            Купить
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 19 -->
+            <article class="flex flex-col gap-6 h-full">
+                <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
+                    <img src="./public/images/track-97607250.webp" alt="Как заботиться о себе без надрыва" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col gap-5 flex-1 min-h-0">
+                    <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
+                    <div class="flex flex-col gap-3 flex-1 min-h-0">
+                        <h3 class="text-[22px] font-medium leading-6 text-black">Как заботиться о себе без надрыва</h3>
+                        <p class="text-base leading-normal text-black">Поможет, когда нет сил даже на перерыв: техники восстановления, здоровые привычки и отдых без самокритики</p>
+                    </div>
+                    <div class="flex gap-3 mt-auto">
+                        <button type="button" onclick="openTrackModal(this)" class="flex-1 bg-yellow rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:opacity-90 transition-opacity cursor-pointer">
+                            Подробнее
+                        </button>
+                        <button type="button" onclick="buyTrack(this)" class="flex-1 border-2 border-black rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:bg-black hover:text-white transition-colors cursor-pointer">
+                            Купить
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 20 -->
+            <article class="flex flex-col gap-6 h-full">
+                <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
+                    <img src="./public/images/track-82932980.webp" alt="Как отстаивать себя, не ломая отношения" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col gap-5 flex-1 min-h-0">
+                    <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
+                    <div class="flex flex-col gap-3 flex-1 min-h-0">
+                        <h3 class="text-[22px] font-medium leading-6 text-black">Как отстаивать себя, не ломая отношения</h3>
+                        <p class="text-base leading-normal text-black">Защищать границы, говорить «нет» и укрепить уверенность в себе. Подойдет, если сложно отказывать и надоело уступать</p>
+                    </div>
+                    <div class="flex gap-3 mt-auto">
+                        <button type="button" onclick="openTrackModal(this)" class="flex-1 bg-yellow rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:opacity-90 transition-opacity cursor-pointer">
+                            Подробнее
+                        </button>
+                        <button type="button" onclick="buyTrack(this)" class="flex-1 border-2 border-black rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:bg-black hover:text-white transition-colors cursor-pointer">
+                            Купить
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 21 -->
+            <article class="flex flex-col gap-6 h-full">
+                <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
+                    <img src="./public/images/track-25743663.webp" alt="Как разобраться, когда все говорят разное" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col gap-5 flex-1 min-h-0">
+                    <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
+                    <div class="flex flex-col gap-3 flex-1 min-h-0">
+                        <h3 class="text-[22px] font-medium leading-6 text-black">Как разобраться, когда все говорят разное</h3>
+                        <p class="text-base leading-normal text-black">Уверенно принимать решения, критически мыслить и доверять себе. Выручит, когда мнения расходятся, а информации слишком много</p>
+                    </div>
+                    <div class="flex gap-3 mt-auto">
+                        <button type="button" onclick="openTrackModal(this)" class="flex-1 bg-yellow rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:opacity-90 transition-opacity cursor-pointer">
+                            Подробнее
+                        </button>
+                        <button type="button" onclick="buyTrack(this)" class="flex-1 border-2 border-black rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:bg-black hover:text-white transition-colors cursor-pointer">
+                            Купить
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 22 -->
+            <article class="flex flex-col gap-6 h-full">
+                <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
+                    <img src="./public/images/track-11274564.webp" alt="Как говорить о сложном" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col gap-5 flex-1 min-h-0">
+                    <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
+                    <div class="flex flex-col gap-3 flex-1 min-h-0">
+                        <h3 class="text-[22px] font-medium leading-6 text-black">Как говорить о сложном</h3>
+                        <p class="text-base leading-normal text-black">Находить слова в трудных ситуациях и разговаривать без напряжения. Полезно, если страшно обидеть и поднять неудобную тему</p>
+                    </div>
+                    <div class="flex gap-3 mt-auto">
+                        <button type="button" onclick="openTrackModal(this)" class="flex-1 bg-yellow rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:opacity-90 transition-opacity cursor-pointer">
+                            Подробнее
+                        </button>
+                        <button type="button" onclick="buyTrack(this)" class="flex-1 border-2 border-black rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:bg-black hover:text-white transition-colors cursor-pointer">
+                            Купить
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 23 -->
+            <article class="flex flex-col gap-6 h-full">
+                <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
+                    <img src="./public/images/track-71578325.webp" alt="Как организовать себя без жесткости" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col gap-5 flex-1 min-h-0">
+                    <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
+                    <div class="flex flex-col gap-3 flex-1 min-h-0">
+                        <h3 class="text-[22px] font-medium leading-6 text-black">Как организовать себя без жесткости</h3>
+                        <p class="text-base leading-normal text-black">Перестать жить в спешке и работать спокойнее. Поможет, если давят дедлайны и замучила вечная гонка</p>
+                    </div>
+                    <div class="flex gap-3 mt-auto">
+                        <button type="button" onclick="openTrackModal(this)" class="flex-1 bg-yellow rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:opacity-90 transition-opacity cursor-pointer">
+                            Подробнее
+                        </button>
+                        <button type="button" onclick="buyTrack(this)" class="flex-1 border-2 border-black rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:bg-black hover:text-white transition-colors cursor-pointer">
+                            Купить
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 24 -->
+            <article class="flex flex-col gap-6 h-full">
+                <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
+                    <img src="./public/images/track-23250997.webp" alt="Быть собой, даже если не все согласны" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col gap-5 flex-1 min-h-0">
+                    <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
+                    <div class="flex flex-col gap-3 flex-1 min-h-0">
+                        <h3 class="text-[22px] font-medium leading-6 text-black">Быть собой, даже если не все согласны</h3>
+                        <p class="text-base leading-normal text-black">Перестать жить ожиданиями других и отстаивать себя без сомнений. Особенно нужен, когда чужие советы сбивают с пути</p>
+                    </div>
+                    <div class="flex gap-3 mt-auto">
+                        <button type="button" onclick="openTrackModal(this)" class="flex-1 bg-yellow rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:opacity-90 transition-opacity cursor-pointer">
+                            Подробнее
+                        </button>
+                        <button type="button" onclick="buyTrack(this)" class="flex-1 border-2 border-black rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:bg-black hover:text-white transition-colors cursor-pointer">
+                            Купить
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 25 -->
+            <article class="flex flex-col gap-6 h-full">
+                <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
+                    <img src="./public/images/track-23929912.webp" alt="Как поддержать другого, когда сам на пределе" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col gap-5 flex-1 min-h-0">
+                    <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
+                    <div class="flex flex-col gap-3 flex-1 min-h-0">
+                        <h3 class="text-[22px] font-medium leading-6 text-black">Как поддержать другого, когда сам на пределе</h3>
+                        <p class="text-base leading-normal text-black">Как регулировать заботу, снизить стресс и сохранить энергию. Хорошо сработает, если не осталось сил помогать даже близким</p>
+                    </div>
+                    <div class="flex gap-3 mt-auto">
+                        <button type="button" onclick="openTrackModal(this)" class="flex-1 bg-yellow rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:opacity-90 transition-opacity cursor-pointer">
+                            Подробнее
+                        </button>
+                        <button type="button" onclick="buyTrack(this)" class="flex-1 border-2 border-black rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:bg-black hover:text-white transition-colors cursor-pointer">
+                            Купить
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 26 -->
+            <article class="flex flex-col gap-6 h-full">
+                <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
+                    <img src="./public/images/track-49590475.webp" alt="Как делегировать и не сойти с ума" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col gap-5 flex-1 min-h-0">
+                    <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
+                    <div class="flex flex-col gap-3 flex-1 min-h-0">
+                        <h3 class="text-[22px] font-medium leading-6 text-black">Как делегировать и не сойти с ума</h3>
+                        <p class="text-base leading-normal text-black">«Кто, если не я»: снизить контроль и делегировать без тревоги. Полезно, когда все приходится делать самому</p>
+                    </div>
+                    <div class="flex gap-3 mt-auto">
+                        <button type="button" onclick="openTrackModal(this)" class="flex-1 bg-yellow rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:opacity-90 transition-opacity cursor-pointer">
+                            Подробнее
+                        </button>
+                        <button type="button" onclick="buyTrack(this)" class="flex-1 border-2 border-black rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:bg-black hover:text-white transition-colors cursor-pointer">
+                            Купить
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 27 -->
+            <article class="flex flex-col gap-6 h-full">
+                <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
+                    <img src="./public/images/track-41777139.webp" alt="Перестать быть героем каждый день" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col gap-5 flex-1 min-h-0">
+                    <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
+                    <div class="flex flex-col gap-3 flex-1 min-h-0">
+                        <h3 class="text-[22px] font-medium leading-6 text-black">Перестать быть героем каждый день</h3>
+                        <p class="text-base leading-normal text-black">Не тащить все на себе, восстановить силы и отдыхать без вины. Поддержит, когда очень устал, но кажется, что жаловаться нельзя</p>
+                    </div>
+                    <div class="flex gap-3 mt-auto">
+                        <button type="button" onclick="openTrackModal(this)" class="flex-1 bg-yellow rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:opacity-90 transition-opacity cursor-pointer">
+                            Подробнее
+                        </button>
+                        <button type="button" onclick="buyTrack(this)" class="flex-1 border-2 border-black rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:bg-black hover:text-white transition-colors cursor-pointer">
+                            Купить
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 28 -->
+            <article class="flex flex-col gap-6 h-full">
+                <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
+                    <img src="./public/images/track-69934983.webp" alt="Успокаиваться внутри, когда снаружи шумно" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col gap-5 flex-1 min-h-0">
+                    <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
+                    <div class="flex flex-col gap-3 flex-1 min-h-0">
+                        <h3 class="text-[22px] font-medium leading-6 text-black">Успокаиваться внутри, когда снаружи шумно</h3>
+                        <p class="text-base leading-normal text-black">Справиться с напряжением, остановить поток мыслей и находить тишину внутри. Полезен, когда мысли и тревога не дают покоя</p>
+                    </div>
+                    <div class="flex gap-3 mt-auto">
+                        <button type="button" onclick="openTrackModal(this)" class="flex-1 bg-yellow rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:opacity-90 transition-opacity cursor-pointer">
+                            Подробнее
+                        </button>
+                        <button type="button" onclick="buyTrack(this)" class="flex-1 border-2 border-black rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:bg-black hover:text-white transition-colors cursor-pointer">
+                            Купить
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 29 -->
+            <article class="flex flex-col gap-6 h-full">
+                <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
+                    <img src="./public/images/track-36039717.webp" alt="Мой режим: как вернуться в ритм" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col gap-5 flex-1 min-h-0">
+                    <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
+                    <div class="flex flex-col gap-3 flex-1 min-h-0">
+                        <h3 class="text-[22px] font-medium leading-6 text-black">Мой режим: как вернуться в ритм</h3>
+                        <p class="text-base leading-normal text-black">Просыпаться отдохнувшим, вернуть силы и жить с энергией. Полезно, если не удается восстановиться после работы и в выходные</p>
+                    </div>
+                    <div class="flex gap-3 mt-auto">
+                        <button type="button" onclick="openTrackModal(this)" class="flex-1 bg-yellow rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:opacity-90 transition-opacity cursor-pointer">
+                            Подробнее
+                        </button>
+                        <button type="button" onclick="buyTrack(this)" class="flex-1 border-2 border-black rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:bg-black hover:text-white transition-colors cursor-pointer">
+                            Купить
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 30 -->
+            <article class="flex flex-col gap-6 h-full">
+                <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
+                    <img src="./public/images/track-20963502.webp" alt="Устоять в своем решении" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col gap-5 flex-1 min-h-0">
+                    <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
+                    <div class="flex flex-col gap-3 flex-1 min-h-0">
+                        <h3 class="text-[22px] font-medium leading-6 text-black">Устоять в своем решении</h3>
+                        <p class="text-base leading-normal text-black">Перестать обесценивать выбор и доверять себе. Поможет, когда свое решение кажется неверным</p>
+                    </div>
+                    <div class="flex gap-3 mt-auto">
+                        <button type="button" onclick="openTrackModal(this)" class="flex-1 bg-yellow rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:opacity-90 transition-opacity cursor-pointer">
+                            Подробнее
+                        </button>
+                        <button type="button" onclick="buyTrack(this)" class="flex-1 border-2 border-black rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:bg-black hover:text-white transition-colors cursor-pointer">
+                            Купить
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 31 -->
+            <article class="flex flex-col gap-6 h-full">
+                <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
+                    <img src="./public/images/track-57541119.webp" alt="Научиться принимать положительную обратную связь" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col gap-5 flex-1 min-h-0">
+                    <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
+                    <div class="flex flex-col gap-3 flex-1 min-h-0">
+                        <h3 class="text-[22px] font-medium leading-6 text-black">Научиться принимать положительную обратную связь</h3>
+                        <p class="text-base leading-normal text-black">Принять сильные стороны и поверить в свою ценность. Поддержит, если комплименты смущают, а успех кажется случайным</p>
+                    </div>
+                    <div class="flex gap-3 mt-auto">
+                        <button type="button" onclick="openTrackModal(this)" class="flex-1 bg-yellow rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:opacity-90 transition-opacity cursor-pointer">
+                            Подробнее
+                        </button>
+                        <button type="button" onclick="buyTrack(this)" class="flex-1 border-2 border-black rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:bg-black hover:text-white transition-colors cursor-pointer">
+                            Купить
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 32 -->
+            <article class="flex flex-col gap-6 h-full">
+                <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
+                    <img src="./public/images/track-27320347.webp" alt="Замечать и принимать позитивные моменты в жизни" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col gap-5 flex-1 min-h-0">
+                    <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
+                    <div class="flex flex-col gap-3 flex-1 min-h-0">
+                        <h3 class="text-[22px] font-medium leading-6 text-black">Замечать и принимать позитивные моменты в жизни</h3>
+                        <p class="text-base leading-normal text-black">Перестать ждать подвоха и радоваться без тревоги. Полезен, если трудно радоваться и кажется, что хорошее быстро закончится</p>
+                    </div>
+                    <div class="flex gap-3 mt-auto">
+                        <button type="button" onclick="openTrackModal(this)" class="flex-1 bg-yellow rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:opacity-90 transition-opacity cursor-pointer">
+                            Подробнее
+                        </button>
+                        <button type="button" onclick="buyTrack(this)" class="flex-1 border-2 border-black rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:bg-black hover:text-white transition-colors cursor-pointer">
+                            Купить
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 33 -->
+            <article class="flex flex-col gap-6 h-full">
+                <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
+                    <img src="./public/images/track-79615916.webp" alt="Разрешить себе поддержку" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col gap-5 flex-1 min-h-0">
+                    <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
+                    <div class="flex flex-col gap-3 flex-1 min-h-0">
+                        <h3 class="text-[22px] font-medium leading-6 text-black">Разрешить себе поддержку</h3>
+                        <p class="text-base leading-normal text-black">Перестать тащить все в одиночку и научиться принимать помощь. Особенно поддержит, если страшно показаться слабым</p>
+                    </div>
+                    <div class="flex gap-3 mt-auto">
+                        <button type="button" onclick="openTrackModal(this)" class="flex-1 bg-yellow rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:opacity-90 transition-opacity cursor-pointer">
+                            Подробнее
+                        </button>
+                        <button type="button" onclick="buyTrack(this)" class="flex-1 border-2 border-black rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:bg-black hover:text-white transition-colors cursor-pointer">
+                            Купить
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 34 -->
+            <article class="flex flex-col gap-6 h-full">
+                <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
+                    <img src="./public/images/track-11382413.webp" alt="Быть слабым и нужным" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col gap-5 flex-1 min-h-0">
+                    <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
+                    <div class="flex flex-col gap-3 flex-1 min-h-0">
+                        <h3 class="text-[22px] font-medium leading-6 text-black">Быть слабым и нужным</h3>
+                        <p class="text-base leading-normal text-black">Как показывать эмоции и разрешить себе слабость. Поддержит, если стыдно плакать при близких и трудно говорить о чувствах</p>
+                    </div>
+                    <div class="flex gap-3 mt-auto">
+                        <button type="button" onclick="openTrackModal(this)" class="flex-1 bg-yellow rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:opacity-90 transition-opacity cursor-pointer">
+                            Подробнее
+                        </button>
+                        <button type="button" onclick="buyTrack(this)" class="flex-1 border-2 border-black rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:bg-black hover:text-white transition-colors cursor-pointer">
+                            Купить
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 35 -->
+            <article class="flex flex-col gap-6 h-full">
+                <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
+                    <img src="./public/images/track-16568327.webp" alt="Как разрешить себе быть неидеальным" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col gap-5 flex-1 min-h-0">
+                    <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
+                    <div class="flex flex-col gap-3 flex-1 min-h-0">
+                        <h3 class="text-[22px] font-medium leading-6 text-black">Как разрешить себе быть неидеальным</h3>
+                        <p class="text-base leading-normal text-black">Освободиться от перфекционизма и позволить себе просить о помощи. Выручит, если страшно ошибаться и быть уязвимым</p>
+                    </div>
+                    <div class="flex gap-3 mt-auto">
+                        <button type="button" onclick="openTrackModal(this)" class="flex-1 bg-yellow rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:opacity-90 transition-opacity cursor-pointer">
+                            Подробнее
+                        </button>
+                        <button type="button" onclick="buyTrack(this)" class="flex-1 border-2 border-black rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:bg-black hover:text-white transition-colors cursor-pointer">
+                            Купить
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 36 -->
+            <article class="flex flex-col gap-6 h-full">
+                <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
+                    <img src="./public/images/track-28144951.webp" alt="Перестроиться, когда жизнь меняется" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col gap-5 flex-1 min-h-0">
+                    <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
+                    <div class="flex flex-col gap-3 flex-1 min-h-0">
+                        <h3 class="text-[22px] font-medium leading-6 text-black">Перестроиться, когда жизнь меняется</h3>
+                        <p class="text-base leading-normal text-black">Найти новые опоры, принять изменения и чувствовать уверенность. Особенно нужен, когда кажется, что поздно начинать</p>
+                    </div>
+                    <div class="flex gap-3 mt-auto">
+                        <button type="button" onclick="openTrackModal(this)" class="flex-1 bg-yellow rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:opacity-90 transition-opacity cursor-pointer">
+                            Подробнее
+                        </button>
+                        <button type="button" onclick="buyTrack(this)" class="flex-1 border-2 border-black rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:bg-black hover:text-white transition-colors cursor-pointer">
+                            Купить
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 37 -->
+            <article class="flex flex-col gap-6 h-full">
+                <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
+                    <img src="./public/images/track-82668060.webp" alt="Как начать новый этап" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col gap-5 flex-1 min-h-0">
+                    <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
+                    <div class="flex flex-col gap-3 flex-1 min-h-0">
+                        <h3 class="text-[22px] font-medium leading-6 text-black">Как начать новый этап</h3>
+                        <p class="text-base leading-normal text-black">Принять перемены, справиться с тревогой и шагнуть в новое. Подойдет при уходе из родительского дома, пенсии или новой работе</p>
+                    </div>
+                    <div class="flex gap-3 mt-auto">
+                        <button type="button" onclick="openTrackModal(this)" class="flex-1 bg-yellow rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:opacity-90 transition-opacity cursor-pointer">
+                            Подробнее
+                        </button>
+                        <button type="button" onclick="buyTrack(this)" class="flex-1 border-2 border-black rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:bg-black hover:text-white transition-colors cursor-pointer">
+                            Купить
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 38 -->
+            <article class="flex flex-col gap-6 h-full">
+                <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
+                    <img src="./public/images/track-89265689.webp" alt="Забота без тревоги" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col gap-5 flex-1 min-h-0">
+                    <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
+                    <div class="flex flex-col gap-3 flex-1 min-h-0">
+                        <h3 class="text-[22px] font-medium leading-6 text-black">Забота без тревоги</h3>
+                        <p class="text-base leading-normal text-black">Начать заботиться о теле спокойно и бережно. Подойдет, когда тревожно за здоровье, но идти к врачу страшно</p>
+                    </div>
+                    <div class="flex gap-3 mt-auto">
+                        <button type="button" onclick="openTrackModal(this)" class="flex-1 bg-yellow rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:opacity-90 transition-opacity cursor-pointer">
+                            Подробнее
+                        </button>
+                        <button type="button" onclick="buyTrack(this)" class="flex-1 border-2 border-black rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:bg-black hover:text-white transition-colors cursor-pointer">
+                            Купить
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 39 -->
+            <article class="flex flex-col gap-6 h-full">
+                <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
+                    <img src="./public/images/track-40333165.webp" alt="Вернуться в контакт с собой" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col gap-5 flex-1 min-h-0">
+                    <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
+                    <div class="flex flex-col gap-3 flex-1 min-h-0">
+                        <h3 class="text-[22px] font-medium leading-6 text-black">Вернуться в контакт с собой</h3>
+                        <p class="text-base leading-normal text-black">Услышать тело, принять чувства и ощутить спокойствие внутри. Поможет, когда чего-то хочется, но что — непонятно</p>
+                    </div>
+                    <div class="flex gap-3 mt-auto">
+                        <button type="button" onclick="openTrackModal(this)" class="flex-1 bg-yellow rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:opacity-90 transition-opacity cursor-pointer">
+                            Подробнее
+                        </button>
+                        <button type="button" onclick="buyTrack(this)" class="flex-1 border-2 border-black rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:bg-black hover:text-white transition-colors cursor-pointer">
+                            Купить
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 40 -->
+            <article class="flex flex-col gap-6 h-full">
+                <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
+                    <img src="./public/images/track-88995331.webp" alt="Как отпустить контроль и не развалиться" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col gap-5 flex-1 min-h-0">
+                    <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
+                    <div class="flex flex-col gap-3 flex-1 min-h-0">
+                        <h3 class="text-[22px] font-medium leading-6 text-black">Как отпустить контроль и не развалиться</h3>
+                        <p class="text-base leading-normal text-black">Доверять и делиться ответственностью без страха, что все рухнет. Поможет, если сложно отдыхать, пока остальные работают</p>
+                    </div>
+                    <div class="flex gap-3 mt-auto">
+                        <button type="button" onclick="openTrackModal(this)" class="flex-1 bg-yellow rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:opacity-90 transition-opacity cursor-pointer">
+                            Подробнее
+                        </button>
+                        <button type="button" onclick="buyTrack(this)" class="flex-1 border-2 border-black rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:bg-black hover:text-white transition-colors cursor-pointer">
+                            Купить
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 41 -->
+            <article class="flex flex-col gap-6 h-full">
+                <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
+                    <img src="./public/images/track-37533590.webp" alt="Помогать, не теряя себя" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col gap-5 flex-1 min-h-0">
+                    <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
+                    <div class="flex flex-col gap-3 flex-1 min-h-0">
+                        <h3 class="text-[22px] font-medium leading-6 text-black">Помогать, не теряя себя</h3>
+                        <p class="text-base leading-normal text-black">Как помогать другим и не забывать о себе. Для ситуаций, когда кажется, что нужно спасать других</p>
+                    </div>
+                    <div class="flex gap-3 mt-auto">
+                        <button type="button" onclick="openTrackModal(this)" class="flex-1 bg-yellow rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:opacity-90 transition-opacity cursor-pointer">
+                            Подробнее
+                        </button>
+                        <button type="button" onclick="buyTrack(this)" class="flex-1 border-2 border-black rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:bg-black hover:text-white transition-colors cursor-pointer">
+                            Купить
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 42 -->
+            <article class="flex flex-col gap-6 h-full">
+                <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
+                    <img src="./public/images/track-26360854.webp" alt="Как договариваться без ссор" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col gap-5 flex-1 min-h-0">
+                    <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
+                    <div class="flex flex-col gap-3 flex-1 min-h-0">
+                        <h3 class="text-[22px] font-medium leading-6 text-black">Как договариваться без ссор</h3>
+                        <p class="text-base leading-normal text-black">Находить общий язык и делить обязанности. Поддержит, когда один берет все на себя, а другой не включается в дела</p>
+                    </div>
+                    <div class="flex gap-3 mt-auto">
+                        <button type="button" onclick="openTrackModal(this)" class="flex-1 bg-yellow rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:opacity-90 transition-opacity cursor-pointer">
+                            Подробнее
+                        </button>
+                        <button type="button" onclick="buyTrack(this)" class="flex-1 border-2 border-black rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:bg-black hover:text-white transition-colors cursor-pointer">
+                            Купить
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 43 -->
+            <article class="flex flex-col gap-6 h-full">
+                <div class="aspect-square rounded-[28px] overflow-hidden shrink-0">
+                    <img src="./public/images/track-77970398.webp" alt="Снова быть рядом" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col gap-5 flex-1 min-h-0">
+                    <p class="text-[27.769px] font-medium leading-normal text-black">490 ₽</p>
+                    <div class="flex flex-col gap-3 flex-1 min-h-0">
+                        <h3 class="text-[22px] font-medium leading-6 text-black">Снова быть рядом</h3>
+                        <p class="text-base leading-normal text-black">Вернуть тепло, наладить доверие и почувствовать поддержку. Будет особенно полезен, если близкие отдалились</p>
+                    </div>
+                    <div class="flex gap-3 mt-auto">
+                        <button type="button" onclick="openTrackModal(this)" class="flex-1 bg-yellow rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:opacity-90 transition-opacity cursor-pointer">
+                            Подробнее
+                        </button>
+                        <button type="button" onclick="buyTrack(this)" class="flex-1 border-2 border-black rounded-full px-5 py-4 text-[17px] font-medium leading-[18px] text-black hover:bg-black hover:text-white transition-colors cursor-pointer">
+                            Купить
+                        </button>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <!-- Модальное окно трека (попап) — полноэкранное -->
+    <div id="trackModal" class="track-modal-backdrop fixed inset-0 z-50 bg-black/50" onclick="closeTrackModalOnBackdrop(event)">
+        <div class="track-modal-panel fixed inset-0 flex flex-col md:flex-row items-center justify-center md:gap-10 gap-6 p-6 md:p-10 bg-white overflow-y-auto" onclick="event.stopPropagation()">
+            <button type="button" onclick="closeTrackModal()" class="absolute top-4 right-4 md:top-6 md:right-6 z-10 w-10 h-10 flex items-center justify-center rounded-full hover:bg-black/5 transition-colors cursor-pointer" aria-label="Закрыть">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+            <!-- Мобильно: вертикально, по центру. Десктоп: картинка слева -->
+            <div class="flex-1 md:flex-none md:w-[min(45%,400px)] flex flex-col items-center md:items-start justify-center">
+                <div class="w-full max-w-[280px] md:max-w-full aspect-square rounded-[28px] overflow-hidden mb-6 md:mb-0 shrink-0">
+                    <img id="trackModalImg" src="" alt="" class="w-full h-full object-cover">
+                </div>
+            </div>
+            <!-- Контент: мобильно по центру, десктоп справа -->
+            <div class="flex-1 md:min-w-0 md:max-w-[480px] flex flex-col items-center md:items-start text-center md:text-left">
+                <h2 id="trackModalTitle" class="text-[24px] md:text-[32px] font-medium leading-tight text-black mb-2"></h2>
+                <p id="trackModalPrice" class="text-[27.769px] font-medium text-black mb-4"></p>
+                <p id="trackModalDesc" class="text-base md:text-lg leading-normal text-black mb-6 md:mb-8"></p>
+                <button type="button" id="trackModalBuy" onclick="buyTrack(this)" class="w-full md:w-auto md:min-w-[200px] max-w-[320px] bg-yellow rounded-full px-8 py-4 text-[17px] font-medium text-black hover:opacity-90 transition-opacity cursor-pointer">
+                    Купить
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript для карусели и модального окна -->
+    <script>
+        function scrollCarousel(direction) {
+            const carousel = document.getElementById('carousel');
+            const scrollAmount = 355; // ширина карточки (343px) + gap (12px)
+            
+            if (direction === 'left') {
+                carousel.scrollBy({
+                    left: -scrollAmount,
+                    behavior: 'smooth'
+                });
+            } else {
+                carousel.scrollBy({
+                    left: scrollAmount,
+                    behavior: 'smooth'
+                });
+            }
+        }
+        
+        function openTrackModal(btn) {
+            const article = btn.closest('article');
+            if (!article) return;
+            const img = article.querySelector('img');
+            const titleEl = article.querySelector('h3');
+            const descEl = article.querySelector('.flex.flex-col.gap-3 p');
+            const priceEl = article.querySelector('.flex.flex-col.gap-5 > p');
+            const modal = document.getElementById('trackModal');
+            document.getElementById('trackModalImg').src = img?.src || '';
+            document.getElementById('trackModalImg').alt = img?.alt || '';
+            document.getElementById('trackModalTitle').textContent = titleEl?.textContent || '';
+            document.getElementById('trackModalDesc').textContent = descEl?.textContent || '';
+            document.getElementById('trackModalPrice').textContent = priceEl?.textContent || '490 ₽';
+            modal.classList.add('is-open');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeTrackModal() {
+            document.getElementById('trackModal').classList.remove('is-open');
+            document.body.style.overflow = '';
+        }
+        function closeTrackModalOnBackdrop(e) {
+            if (e.target === e.currentTarget) closeTrackModal();
+        }
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeTrackModal();
+        });
+        
+        async function buyTrack(btn) {
+            const article = btn.closest('article');
+            const titleEl = article ? article.querySelector('h3') : document.getElementById('trackModalTitle');
+            const description = (titleEl?.textContent || 'Трек').trim();
+            const apiUrl = (typeof window.YOOKASSA_API === 'string' ? window.YOOKASSA_API : '') || '/api/create-payment';
+            const btnEl = btn.tagName === 'BUTTON' ? btn : document.getElementById('trackModalBuy');
+            const origText = btnEl?.textContent;
+            if (btnEl) { btnEl.disabled = true; btnEl.textContent = 'Загрузка…'; }
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 20000);
+            try {
+                const res = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ amount: 490, description, return_url: location.href }),
+                    signal: controller.signal,
+                });
+                clearTimeout(timeoutId);
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok) throw new Error(data.error || 'Ошибка при создании платежа');
+                if (data.confirmation_url) {
+                    window.location.href = data.confirmation_url;
+                    return;
+                }
+                throw new Error('Нет ссылки на оплату');
+            } catch (err) {
+                if (err.name === 'AbortError') {
+                    alert('Превышено время ожидания. Убедитесь, что сервер запущен (npm start) и есть интернет.');
+                } else {
+                    alert(err.message || 'Не удалось перейти к оплате. Проверьте настройку YooKassa и запустите сервер: npm start');
+                }
+            } finally {
+                clearTimeout(timeoutId);
+                if (btnEl) { btnEl.disabled = false; btnEl.textContent = origText || 'Купить'; }
+            }
+        }
+    </script>
+</body>
+</html>
