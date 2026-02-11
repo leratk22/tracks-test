@@ -1,8 +1,7 @@
 {
   "functions": {
     "api/create-payment.js": {
-      "memory": 128,
-      "runtime": "nodejs18.x"
+      "memory": 128
     }
   }
 }
