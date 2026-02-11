@@ -10,7 +10,7 @@ const srcDir = path.join(projectDir, '..', 'Euclid Circular A (1)', 'Euclid Circ
 const dstDir = path.join(projectDir, 'public', 'fonts');
 
 const files = [
-  'EuclidCircularA-Regular-WebS.woff2',
+  'EuclidCircularA-Regular-WebXL.woff2',
   'EuclidCircularA-Medium-WebM.woff2',
   'EuclidCircularA-Semibold-WebM.woff2',
   'EuclidCircularA-Semibold-WebS.woff2',
