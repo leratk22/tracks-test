@@ -1,7 +1,7 @@
 {
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
   "functions": {
-    "api/create-payment.js": {
-      "memory": 128
-    }
+    "api/create-payment.js": { "memory": 128 }
   }
 }
